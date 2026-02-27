@@ -6,109 +6,129 @@ interface Activity {
     name: string;
     description: string;
     tokens: number;
+    activityLimitPerSem: number;
     type: 'Internal' | 'External';
     createdAt: string;
     updatedAt: string;
 }
 
 export default function ActivityManagement() {
-    
+
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
+    const [minTokenModalOpen, setMinTokenModalOpen] = useState(false);
+    const [minTokensPerSem, setMinTokensPerSem] = useState<number>(10);
+    const [tempMinTokens, setTempMinTokens] = useState<string>(minTokensPerSem.toString());
     const [deleteId, setDeleteId] = useState<number | null>(null);
     const defaultActivities: Activity[] = [
-  {
-    id: 1,
-    name: 'Startup',
-    description: 'Launch your own startup project',
-    tokens: 12,
-    type: 'External',
-    createdAt: '05/01/2026, 09:15:00',
-    updatedAt: '10/01/2026, 14:30:00',
-  },
-  {
-    id: 2,
-    name: 'Internship',
-    description: 'Complete an internship program',
-    tokens: 6,
-    type: 'External',
-    createdAt: '12/01/2026, 11:00:00',
-    updatedAt: '18/01/2026, 16:45:00',
-  },
-  {
-    id: 3,
-    name: 'Club Activity',
-    description: 'Participate in college club activities',
-    tokens: 3,
-    type: 'Internal',
-    createdAt: '20/01/2026, 08:30:00',
-    updatedAt: '22/01/2026, 13:20:00',
-  },
-  {
-    id: 4,
-    name: 'Sports',
-    description: 'Participate in sports events',
-    tokens: 3,
-    type: 'Internal',
-    createdAt: '25/01/2026, 15:10:00',
-    updatedAt: '28/01/2026, 17:05:00',
-  },
-  {
-    id: 5,
-    name: 'NCC or NSS',
-    description: 'Join NCC or NSS programs',
-    tokens: 3,
-    type: 'Internal',
-    createdAt: '01/02/2026, 10:00:00',
-    updatedAt: '03/02/2026, 12:40:00',
-  },
-  {
-    id: 6,
-    name: 'Global Certificate',
-    description: 'Earn recognized certifications',
-    tokens: 4,
-    type: 'External',
-    createdAt: '05/02/2026, 09:50:00',
-    updatedAt: '08/02/2026, 14:25:00',
-  },
-  {
-    id: 7,
-    name: 'Other College Event',
-    description: 'Join various college events',
-    tokens: 3,
-    type: 'Internal',
-    createdAt: '10/02/2026, 11:35:00',
-    updatedAt: '14/02/2026, 16:10:00',
-  },
-  {
-    id: 8,
-    name: 'Organizing Event',
-    description: 'Organize college events',
-    tokens: 3,
-    type: 'Internal',
-    createdAt: '15/02/2026, 13:15:00',
-    updatedAt: '18/02/2026, 15:45:00',
-  },
-  {
-    id: 9,
-    name: 'Volunteering',
-    description: 'Volunteer for social causes',
-    tokens: 2,
-    type: 'External',
-    createdAt: '20/02/2026, 08:20:00',
-    updatedAt: '22/02/2026, 10:30:00',
-  },
-];
-const [activities, setActivities] = useState<Activity[]>(defaultActivities);
+        {
+            id: 1,
+            name: 'Startup',
+            description: 'Launch your own startup project',
+            tokens: 12,
+            activityLimitPerSem: 1,
+            type: 'External',
+            createdAt: '05/01/2026, 09:15:00',
+            updatedAt: '10/01/2026, 14:30:00',
+        },
+        {
+            id: 2,
+            name: 'Internship',
+            description: 'Complete an internship program',
+            tokens: 6,
+            activityLimitPerSem: 2,
+            type: 'External',
+            createdAt: '12/01/2026, 11:00:00',
+            updatedAt: '18/01/2026, 16:45:00',
+        },
+        {
+            id: 3,
+            name: 'Club Activity',
+            description: 'Participate in college club activities',
+            tokens: 3,
+            activityLimitPerSem: 5,
+            type: 'Internal',
+            createdAt: '20/01/2026, 08:30:00',
+            updatedAt: '22/01/2026, 13:20:00',
+        },
+        {
+            id: 4,
+            name: 'Sports',
+            description: 'Participate in sports events',
+            tokens: 3,
+            activityLimitPerSem: 4,
+            type: 'Internal',
+            createdAt: '25/01/2026, 15:10:00',
+            updatedAt: '28/01/2026, 17:05:00',
+        },
+        {
+            id: 5,
+            name: 'NCC or NSS',
+            description: 'Join NCC or NSS programs',
+            tokens: 3,
+            activityLimitPerSem: 3,
+            type: 'Internal',
+            createdAt: '01/02/2026, 10:00:00',
+            updatedAt: '03/02/2026, 12:40:00',
+        },
+        {
+            id: 6,
+            name: 'Global Certificate',
+            description: 'Earn recognized certifications',
+            tokens: 4,
+            activityLimitPerSem: 2,
+            type: 'External',
+            createdAt: '05/02/2026, 09:50:00',
+            updatedAt: '08/02/2026, 14:25:00',
+        },
+        {
+            id: 7,
+            name: 'Other College Event',
+            description: 'Join various college events',
+            tokens: 3,
+            activityLimitPerSem: 6,
+            type: 'Internal',
+            createdAt: '10/02/2026, 11:35:00',
+            updatedAt: '14/02/2026, 16:10:00',
+        },
+        {
+            id: 8,
+            name: 'Organizing Event',
+            description: 'Organize college events',
+            tokens: 3,
+            activityLimitPerSem: 2,
+            type: 'Internal',
+            createdAt: '15/02/2026, 13:15:00',
+            updatedAt: '18/02/2026, 15:45:00',
+        },
+        {
+            id: 9,
+            name: 'Volunteering',
+            description: 'Volunteer for social causes',
+            tokens: 2,
+            activityLimitPerSem: 4,
+            type: 'External',
+            createdAt: '20/02/2026, 08:20:00',
+            updatedAt: '22/02/2026, 10:30:00',
+        },
+    ];
+    const [activities, setActivities] = useState<Activity[]>(defaultActivities);
     const [form, setForm] = useState({
         name: '',
         description: '',
         tokens: '',
+        activityLimitPerSem: '',
         type: 'Internal' as 'Internal' | 'External',
     });
 
     const openCreate = () => {
-        setForm({ name: '', description: '', tokens: '', type: 'Internal' });
+        setForm({
+            name: '',
+            description: '',
+            tokens: '',
+            activityLimitPerSem: '',
+            type: 'Internal'
+        });
         setEditingId(null);
         setDrawerOpen(true);
     };
@@ -118,6 +138,7 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
             name: activity.name,
             description: activity.description,
             tokens: activity.tokens.toString(),
+            activityLimitPerSem: activity.activityLimitPerSem.toString(),
             type: activity.type,
         });
         setEditingId(activity.id);
@@ -134,6 +155,7 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
                         ? {
                             ...a,
                             ...form,
+                            activityLimitPerSem: Number(form.activityLimitPerSem),
                             tokens: Number(form.tokens),
                             updatedAt: new Date().toLocaleString(),
                         }
@@ -147,6 +169,7 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
                 description: form.description,
                 tokens: Number(form.tokens),
                 type: form.type,
+                activityLimitPerSem: Number(form.activityLimitPerSem),
                 createdAt: new Date().toLocaleString(),
                 updatedAt: new Date().toLocaleString(),
             };
@@ -170,13 +193,25 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
                 <h1 className="text-2xl font-semibold text-gray-800">
                     Activity Management
                 </h1>
-                <button
-                    onClick={openCreate}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
-                >
-                    <Plus className="w-4 h-4" />
-                    Add Activity
-                </button>
+                <div className="flex gap-3">
+                    <button
+                        onClick={() => {
+                            setTempMinTokens(minTokensPerSem.toString());
+                            setMinTokenModalOpen(true);
+                        }}
+                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+                    >
+                        Set Min Tokens / Sem
+                    </button>
+
+                    <button
+                        onClick={openCreate}
+                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Add Activity
+                    </button>
+                </div>
             </div>
 
             {/* Table */}
@@ -186,6 +221,7 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
                         <tr>
                             <th className="px-6 py-3 text-left">Activity</th>
                             <th className="px-6 py-3 text-left">Tokens</th>
+                            <th className="px-6 py-3 text-left">Limit / Sem</th>
                             <th className="px-6 py-3 text-left">Type</th>
                             <th className="px-6 py-3 text-left">Created</th>
                             <th className="px-6 py-3 text-left">Updated</th>
@@ -201,7 +237,8 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
                                         {a.description}
                                     </div>
                                 </td>
-                                <td className="px-6 py-4">{a.tokens}</td>
+                                <td className="px-6 py-4 text-xs text-gray-500">{a.tokens}</td>
+                                <td className="px-6 py-4 text-xs text-gray-500">{a.activityLimitPerSem}</td>
                                 <td className="px-6 py-4">
                                     <span
                                         className={`px-2 py-1 text-xs rounded-full ${a.type === 'Internal'
@@ -215,6 +252,7 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
                                 <td className="px-6 py-4 text-xs text-gray-500">
                                     {a.createdAt}
                                 </td>
+
                                 <td className="px-6 py-4 text-xs text-gray-500">
                                     {a.updatedAt}
                                 </td>
@@ -300,6 +338,52 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
                     onClick={() => setDrawerOpen(false)}
                 />
             )}
+            {minTokenModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+
+                    {/* Overlay */}
+                    <div
+                        className="absolute inset-0 bg-black/40"
+                        onClick={() => setMinTokenModalOpen(false)}
+                    />
+
+                    {/* Modal */}
+                    <div className="relative bg-white rounded-xl shadow-2xl w-96 p-8 z-50">
+
+                        <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">
+                            Set Minimum Tokens Per Semester
+                        </h3>
+
+                        <input
+                            type="number"
+                            value={tempMinTokens}
+                            onChange={(e) => setTempMinTokens(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-6"
+                            placeholder="Enter minimum tokens"
+                        />
+
+                        <div className="flex justify-center gap-4">
+                            <button
+                                onClick={() => setMinTokenModalOpen(false)}
+                                className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    setMinTokensPerSem(Number(tempMinTokens));
+                                    setMinTokenModalOpen(false);
+                                }}
+                                className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                            >
+                                Save
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            )}
 
             {/* Right Sliding Drawer */}
             <div
@@ -341,6 +425,15 @@ const [activities, setActivities] = useState<Activity[]>(defaultActivities);
                         value={form.tokens}
                         onChange={(e) =>
                             setForm({ ...form, tokens: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    />
+                    <input
+                        type="number"
+                        placeholder="Activity Limit Per Semester"
+                        value={form.activityLimitPerSem}
+                        onChange={(e) =>
+                            setForm({ ...form, activityLimitPerSem: e.target.value })
                         }
                         className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                     />

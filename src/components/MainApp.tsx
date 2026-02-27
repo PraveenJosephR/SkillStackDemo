@@ -5,10 +5,15 @@ import {
   Home,
   ListChecks,
   LogOut,
+  Brain,
+  Plus,
+  BellRing,
+  Users,
   Map,
   Trophy,
   LayoutDashboard,
   ClipboardList,
+  Bell,
   Flag,
   BarChart3,
 } from 'lucide-react';
@@ -18,6 +23,8 @@ import Dashboard from './Dashboard';
 import MyCurrentActivities from './MyCurrentActivities';
 import RaceTo16 from './RaceTo16';
 import DepartmentStats from './DepartmentStats';
+import NotificationCenter from './NotificationCenter';
+import ProgramManagement from './ProgramManagement';
 import ActivityManagement from './ActivityManagement';
 import StaffStudentManagement from './StaffStudentManagement';
 import { Coins } from 'lucide-react';
@@ -35,7 +42,9 @@ type Page =
   | 'journey'
   | 'leaderboard'
   | 'activityManagement'
+  | 'programManagement'
   | 'profile'
+  | 'notification'
   | 'race'
   | 'dashboard'
   | 'userManagement'
@@ -54,8 +63,15 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
   const [scrollContainer, setScrollContainer] = useState<HTMLDivElement | null>(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
-const [menuOpen, setMenuOpen] = useState(false);
-const tokens = Number(localStorage.getItem('tokens') || 18);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+
+  const notifications = [
+    { id: 1, message: "Your Internship activity was approved." },
+    { id: 2, message: "Minimum tokens per semester updated." },
+    { id: 3, message: "Malpractice reported for a student." },
+  ];
+  const tokens = Number(localStorage.getItem('tokens') || 18);
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget;
 
@@ -77,7 +93,9 @@ const tokens = Number(localStorage.getItem('tokens') || 18);
     ...(isStaff === 2
       ? [
         { id: 'activityManagement' as Page, name: 'Activity Management', icon: ClipboardList },
-        { id: 'userManagement' as Page, name: 'User Management', icon: ClipboardList }
+        { id: 'userManagement' as Page, name: 'User Management', icon: Users },
+        { id: 'programManagement' as Page, name: 'Program Management', icon: GraduationCap },
+        { id: 'notification' as Page, name: 'Notification Center', icon: BellRing },
       ]
       : []),
 
@@ -112,15 +130,19 @@ const tokens = Number(localStorage.getItem('tokens') || 18);
         return <DepartmentStats />;
       case 'dashboard':
         return <Dashboard />;
-         case 'profile':
+      case 'profile':
         return <Profile />;
+        case 'notification':
+        return <NotificationCenter />;
       case 'plan':
         return <SemesterPlan />;
       case 'activityManagement':
         return <ActivityManagement />;
-        case 'studentManagement':
-          return <StaffStudentManagement />;
-        case 'userManagement':
+      case 'programManagement':
+        return <ProgramManagement />;
+      case 'studentManagement':
+        return <StaffStudentManagement />;
+      case 'userManagement':
         return <UserManagement />;
       default:
         return <Feed />;
@@ -134,7 +156,7 @@ const tokens = Number(localStorage.getItem('tokens') || 18);
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <div className="bg-blue-600 p-2 rounded-lg">
-                <GraduationCap className="w-6 h-6 text-white" />
+                <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-800">SkillStack</h1>
@@ -143,51 +165,92 @@ const tokens = Number(localStorage.getItem('tokens') || 18);
             </div>
             <div className="relative flex items-center gap-4">
 
-  {/* Tokens - Only Student */}
-  {isStaff === 0 && (
-    <div className="flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">
-      <Coins className="w-4 h-4" />
-      {tokens}
-    </div>
-  )}
-
-  {/* User Avatar */}
+              {/* Tokens - Only Student */}
+              {isStaff === 0 && (
+                <div className="flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">
+                  <Coins className="w-4 h-4" />
+                  {tokens}
+                  <Plus onClick={()=>{setCurrentPage('select')}} className="w-4 h-4 hover:cursor-pointer" />
+                </div>
+              )}
+              <div className="relative">
+  {/* Bell Button */}
   <button
-    onClick={() => setMenuOpen(!menuOpen)}
-    className="w-9 h-9 rounded-full overflow-hidden border"
+    onClick={() => setNotificationOpen(!notificationOpen)}
+    className="relative p-2 rounded-full hover:bg-gray-100 transition"
   >
-    <img
-      src="/assets/img/user icon.png"
-      alt="User"
-      className="w-full h-full object-cover"
-    />
+    <Bell className="w-6 h-6 text-gray-700" />
+
+    {/* Red Dot */}
+    {notifications.length > 0 && (
+      <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
+    )}
   </button>
 
   {/* Dropdown */}
-  {menuOpen && (
-    <div className="absolute right-0 top-12 w-40 bg-white shadow-lg rounded-lg border z-50">
-      <button
-        onClick={() => {
-          setCurrentPage('profile');
-          setMenuOpen(false);
-        }}
-        className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
-      >
-        Profile
-      </button>
+  {notificationOpen && (
+    <div className="absolute right-0 mt-3 w-80 bg-white shadow-xl rounded-xl border z-50">
+      <div className="p-4 border-b font-semibold text-gray-700">
+        Notifications
+      </div>
 
-      <button
-        onClick={() => {
-          onLogout();
-          setMenuOpen(false);
-        }}
-        className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
-      >
-        Logout
-      </button>
+      <div className="max-h-72 overflow-y-auto">
+        {notifications.length === 0 ? (
+          <div className="p-4 text-sm text-gray-500">
+            No notifications
+          </div>
+        ) : (
+          notifications.map((n) => (
+            <div
+              key={n.id}
+              className="px-4 py-3 text-sm hover:bg-gray-50 border-b last:border-b-0"
+            >
+              {n.message}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   )}
 </div>
+
+              {/* User Avatar */}
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="w-9 h-9 rounded-full overflow-hidden border"
+              >
+                <img
+                  src="/assets/img/user icon.png"
+                  alt="User"
+                  className="w-full h-full object-cover"
+                />
+              </button>
+
+              {/* Dropdown */}
+              {menuOpen && (
+                <div className="absolute right-0 top-12 w-40 bg-white shadow-lg rounded-lg border z-50">
+                  <button
+                    onClick={() => {
+                      setCurrentPage('profile');
+                      setMenuOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                  >
+                    Profile
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      onLogout();
+                      setMenuOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -217,8 +280,8 @@ const tokens = Number(localStorage.getItem('tokens') || 18);
                   key={item.id}
                   onClick={() => setCurrentPage(item.id)}
                   className={`flex items-center gap-2 px-4 py-4 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${currentPage === item.id
-                      ? 'border-blue-600 text-blue-600'
-                      : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                    ? 'border-blue-600 text-blue-600'
+                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                     }`}
                 >
                   <Icon className="w-5 h-5" />
