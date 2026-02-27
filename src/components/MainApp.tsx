@@ -24,6 +24,7 @@ import MyCurrentActivities from './MyCurrentActivities';
 import RaceTo16 from './RaceTo16';
 import DepartmentStats from './DepartmentStats';
 import NotificationCenter from './NotificationCenter';
+import SkillConnect from './SkillConnect';
 import ProgramManagement from './ProgramManagement';
 import ActivityManagement from './ActivityManagement';
 import StaffStudentManagement from './StaffStudentManagement';
@@ -44,6 +45,7 @@ type Page =
   | 'activityManagement'
   | 'programManagement'
   | 'profile'
+  | 'skillConnect'
   | 'notification'
   | 'race'
   | 'dashboard'
@@ -86,6 +88,7 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
       ? [
         { id: 'dashboard' as Page, name: 'Dashboard', icon: LayoutDashboard },
         { id: 'studentManagement' as Page, name: 'Student Management', icon: LayoutDashboard },
+        { id: 'skillConnect' as Page, name: 'Skill Connect', icon: Users },
 
       ]
       : []),
@@ -105,11 +108,15 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
         { id: 'select' as Page, name: 'Select Activities', icon: Activity },
         { id: 'current' as Page, name: 'My Current Activities', icon: ListChecks },
         { id: 'journey' as Page, name: 'My Journey', icon: Map },
-        { id: 'leaderboard' as Page, name: 'Leaderboard', icon: Trophy },
         { id: 'race' as Page, name: 'Race to 16', icon: Flag },
         { id: 'department' as Page, name: 'Department Stats', icon: BarChart3 },
       ]
       : []),
+       ...(isStaff !== 2
+    ? [
+        { id: 'leaderboard' as Page, name: 'Leaderboard', icon: Trophy },
+      ]
+    : []),
   ];
 
   const renderPage = () => {
@@ -132,8 +139,10 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
         return <Dashboard />;
       case 'profile':
         return <Profile />;
-        case 'notification':
+      case 'notification':
         return <NotificationCenter />;
+        case 'skillConnect':
+        return <SkillConnect />;
       case 'plan':
         return <SemesterPlan />;
       case 'activityManagement':
@@ -170,49 +179,49 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
                 <div className="flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">
                   <Coins className="w-4 h-4" />
                   {tokens}
-                  <Plus onClick={()=>{setCurrentPage('select')}} className="w-4 h-4 hover:cursor-pointer" />
+                  <Plus onClick={() => { setCurrentPage('select') }} className="w-4 h-4 hover:cursor-pointer" />
                 </div>
               )}
               <div className="relative">
-  {/* Bell Button */}
-  <button
-    onClick={() => setNotificationOpen(!notificationOpen)}
-    className="relative p-2 rounded-full hover:bg-gray-100 transition"
-  >
-    <Bell className="w-6 h-6 text-gray-700" />
+                {/* Bell Button */}
+                <button
+                  onClick={() => setNotificationOpen(!notificationOpen)}
+                  className="relative p-2 rounded-full hover:bg-gray-100 transition"
+                >
+                  <Bell className="w-6 h-6 text-gray-700" />
 
-    {/* Red Dot */}
-    {notifications.length > 0 && (
-      <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
-    )}
-  </button>
+                  {/* Red Dot */}
+                  {notifications.length > 0 && (
+                    <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
+                  )}
+                </button>
 
-  {/* Dropdown */}
-  {notificationOpen && (
-    <div className="absolute right-0 mt-3 w-80 bg-white shadow-xl rounded-xl border z-50">
-      <div className="p-4 border-b font-semibold text-gray-700">
-        Notifications
-      </div>
+                {/* Dropdown */}
+                {notificationOpen && (
+                  <div className="absolute right-0 mt-3 w-80 bg-white shadow-xl rounded-xl border z-50">
+                    <div className="p-4 border-b font-semibold text-gray-700">
+                      Notifications
+                    </div>
 
-      <div className="max-h-72 overflow-y-auto">
-        {notifications.length === 0 ? (
-          <div className="p-4 text-sm text-gray-500">
-            No notifications
-          </div>
-        ) : (
-          notifications.map((n) => (
-            <div
-              key={n.id}
-              className="px-4 py-3 text-sm hover:bg-gray-50 border-b last:border-b-0"
-            >
-              {n.message}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  )}
-</div>
+                    <div className="max-h-72 overflow-y-auto">
+                      {notifications.length === 0 ? (
+                        <div className="p-4 text-sm text-gray-500">
+                          No notifications
+                        </div>
+                      ) : (
+                        notifications.map((n) => (
+                          <div
+                            key={n.id}
+                            className="px-4 py-3 text-sm hover:bg-gray-50 border-b last:border-b-0"
+                          >
+                            {n.message}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {/* User Avatar */}
               <button
@@ -223,13 +232,23 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
                   src="/assets/img/user icon.png"
                   alt="User"
                   className="w-full h-full object-cover"
+                  onDoubleClick={()=>{setCurrentPage('profile')}}
                 />
               </button>
 
               {/* Dropdown */}
               {menuOpen && (
                 <div className="absolute right-0 top-12 w-40 bg-white shadow-lg rounded-lg border z-50">
-                  <button
+                  <div className="px-4 py-3">
+                    <p className="text-sm font-semibold text-gray-800">
+                      Joseph E
+                    </p>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="h-px bg-gray-200" />
+                  {isStaff === 0 && (
+<button
                     onClick={() => {
                       setCurrentPage('profile');
                       setMenuOpen(false);
@@ -238,14 +257,17 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
                   >
                     Profile
                   </button>
+                  )}
+                  
 
                   <button
                     onClick={() => {
                       onLogout();
                       setMenuOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
+                    className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-red-100 text-sm text-red-600 rounded-b-lg"
                   >
+                    <LogOut size={16} />
                     Logout
                   </button>
                 </div>
