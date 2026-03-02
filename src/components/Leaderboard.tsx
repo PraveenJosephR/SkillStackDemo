@@ -143,7 +143,7 @@ export default function Leaderboard() {
         </div>
       </div>
 
-      {/* Rest of the leaderboard changes*/}
+      {/* Rest of the leaderboard new*/}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="bg-gray-50 px-6 py-3 border-b border-gray-200">
           <h3 className="font-semibold text-gray-800">Rankings</h3>
