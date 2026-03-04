@@ -35,6 +35,8 @@ import Profile from './Profile';
 import Leaderboard from './Leaderboard';
 import SemesterPlan from './SemesterPlan';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import StageManagement from './StageManagement';
+import WorkflowManagement from './WorkflowManagement';
 
 type Page =
   | 'feed'
@@ -44,6 +46,8 @@ type Page =
   | 'leaderboard'
   | 'activityManagement'
   | 'programManagement'
+  | 'stageManagement'
+  | 'workflowManagement'
   | 'profile'
   | 'skillConnect'
   | 'notification'
@@ -98,6 +102,8 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
         { id: 'activityManagement' as Page, name: 'Activity Management', icon: ClipboardList },
         { id: 'userManagement' as Page, name: 'User Management', icon: Users },
         { id: 'programManagement' as Page, name: 'Program Management', icon: GraduationCap },
+        { id: 'stageManagement' as Page, name: 'Stage Management', icon: GraduationCap },
+        { id: 'workflowManagement' as Page, name: 'Workflow Management', icon: GraduationCap },
         { id: 'notification' as Page, name: 'Notification Center', icon: BellRing },
       ]
       : []),
@@ -112,11 +118,11 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
         { id: 'department' as Page, name: 'Department Stats', icon: BarChart3 },
       ]
       : []),
-       ...(isStaff !== 2
-    ? [
+    ...(isStaff !== 2
+      ? [
         { id: 'leaderboard' as Page, name: 'Leaderboard', icon: Trophy },
       ]
-    : []),
+      : []),
   ];
 
   const renderPage = () => {
@@ -139,9 +145,13 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
         return <Dashboard />;
       case 'profile':
         return <Profile />;
+      case 'stageManagement':
+        return <StageManagement />;
+      case 'workflowManagement':
+        return <WorkflowManagement />;
       case 'notification':
         return <NotificationCenter />;
-        case 'skillConnect':
+      case 'skillConnect':
         return <SkillConnect />;
       case 'plan':
         return <SemesterPlan />;
@@ -232,7 +242,7 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
                   src="/assets/img/user icon.png"
                   alt="User"
                   className="w-full h-full object-cover"
-                  onDoubleClick={()=>{setCurrentPage('profile')}}
+                  onDoubleClick={() => { setCurrentPage('profile') }}
                 />
               </button>
 
@@ -248,17 +258,17 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
                   {/* Divider */}
                   <div className="h-px bg-gray-200" />
                   {isStaff === 0 && (
-<button
-                    onClick={() => {
-                      setCurrentPage('profile');
-                      setMenuOpen(false);
-                    }}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
-                  >
-                    Profile
-                  </button>
+                    <button
+                      onClick={() => {
+                        setCurrentPage('profile');
+                        setMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                    >
+                      Profile
+                    </button>
                   )}
-                  
+
 
                   <button
                     onClick={() => {
