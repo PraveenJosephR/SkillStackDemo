@@ -104,28 +104,36 @@ export default function StaffStudentManagement() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-6">Student Management</h1>
+      <h1 className="text-2xl font-semibold mb-6 text-zinc-800 dark:text-zinc-100">
+        Student Management
+      </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {students.map((student) => (
           <div
             key={student.id}
             onClick={() => setSelectedStudent(student)}
-            className="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md cursor-pointer transition"
+            className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm hover:shadow-md hover:bg-zinc-50 dark:hover:bg-zinc-700 cursor-pointer transition"
           >
-            <h2 className="text-lg font-semibold">{student.name}</h2>
-            <p className="text-xs text-gray-500">{student.registerNo}</p>
+            <h2 className="text-lg font-semibold text-zinc-800 dark:text-zinc-100">
+              {student.name}
+            </h2>
 
-            <div className="mt-4 text-sm text-gray-600">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              {student.registerNo}
+            </p>
+
+            <div className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
               <p>{student.department}</p>
               <p>{student.batch}</p>
             </div>
 
             <div className="mt-4">
-              <span className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-full">
+              <span className="px-3 py-1 text-sm bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 rounded-full">
                 {student.tokens} Tokens
               </span>
             </div>
+
           </div>
         ))}
       </div>

@@ -75,108 +75,139 @@ export default function Leaderboard() {
   const sections = ['All', ...Array.from(new Set(mockLeaderboard.map(s => s.section)))];
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+  <div className="max-w-6xl mx-auto p-4">
 
-      {/* Header & Filters */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-1">Leaderboard</h2>
-          <p className="text-gray-600">Top performing students by token count</p>
-        </div>
-        <div className="flex flex-col md:flex-row gap-2">
-          <select
-            value={departmentFilter}
-            onChange={(e) => setDepartmentFilter(e.target.value)}
-            className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
-          >
-            {departments.map((dept) => (
-              <option key={dept} value={dept}>{dept}</option>
-            ))}
-          </select>
-          <select
-            value={yearFilter}
-            onChange={(e) => setYearFilter(e.target.value)}
-            className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
-          >
-            {years.map((y) => (
-              <option key={y} value={y}>{y}</option>
-            ))}
-          </select>
-          <select
-            value={sectionFilter}
-            onChange={(e) => setSectionFilter(e.target.value)}
-            className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
-          >
-            {sections.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
-        </div>
+    {/* Header & Filters */}
+    <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-sm p-6 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h2 className="text-2xl font-bold text-zinc-800 dark:text-zinc-100 mb-1">
+          Leaderboard
+        </h2>
+        <p className="text-zinc-600 dark:text-zinc-400">
+          Top performing students by token count
+        </p>
       </div>
 
-      {/* Podium */}
-      <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md p-8 mb-6">
-        <div className="flex items-end justify-center gap-4 mb-4">
-          {getPodiumOrder().map((student) => (
-            <div key={student.id} className="flex flex-col items-center">
-              <div className="mb-2">{getPodiumIcon(student.rank)}</div>
-              <div className="text-center mb-3">
-                <div className="font-semibold text-gray-800 text-lg">{student.name}</div>
-                <div className="flex items-center justify-center gap-1 text-blue-600 mt-1">
-                  <Award className="w-4 h-4" />
-                  <span className="font-bold text-xl">{student.totalTokens}</span>
-                </div>
-              </div>
-              <div
-                className={`w-32 ${getPodiumHeight(student.rank)} bg-gradient-to-t ${
-                  student.rank === 1
-                    ? 'from-yellow-400 to-yellow-300'
-                    : student.rank === 2
-                    ? 'from-gray-400 to-gray-300'
-                    : 'from-orange-500 to-orange-400'
-                } rounded-t-lg flex items-center justify-center`}
-              >
-                <span className="text-white font-bold text-3xl">{student.rank}</span>
-              </div>
-            </div>
+      <div className="flex flex-col md:flex-row gap-2">
+        <select
+          value={departmentFilter}
+          onChange={(e) => setDepartmentFilter(e.target.value)}
+          className="border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rose-500 outline-none"
+        >
+          {departments.map((dept) => (
+            <option key={dept} value={dept}>{dept}</option>
           ))}
-        </div>
-      </div>
+        </select>
 
-      {/* Rest of the leaderboard new*/}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="bg-gray-50 px-6 py-3 border-b border-gray-200">
-          <h3 className="font-semibold text-gray-800">Rankings</h3>
-        </div>
-        <div className="divide-y divide-gray-200">
-          {rest.map((student) => (
-            <div
-              key={student.id}
-              className="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                  <span className="font-bold text-gray-700">{student.rank}</span>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-800">{student.name}</div>
-                  {student.totalTokens >= 16 && (
-                    <span className="text-xs text-green-600 font-medium">Eligible</span>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-blue-600">
-                <Award className="w-5 h-5" />
-                <span className="font-bold text-xl">{student.totalTokens}</span>
-                <span className="text-sm text-gray-600">tokens</span>
-              </div>
-            </div>
+        <select
+          value={yearFilter}
+          onChange={(e) => setYearFilter(e.target.value)}
+          className="border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rose-500 outline-none"
+        >
+          {years.map((y) => (
+            <option key={y} value={y}>{y}</option>
           ))}
-          {rest.length === 0 && (
-            <div className="text-center py-6 text-gray-500">No students found for selected filters.</div>
-          )}
-        </div>
+        </select>
+
+        <select
+          value={sectionFilter}
+          onChange={(e) => setSectionFilter(e.target.value)}
+          className="border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100 rounded-lg px-3 py-2 focus:ring-2 focus:ring-rose-500 outline-none"
+        >
+          {sections.map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
       </div>
     </div>
-  );
+
+    {/* Podium */}
+    <div className="bg-gradient-to-br from-white to-white dark:from-zinc-800 dark:to-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-sm p-8 mb-6">
+      <div className="flex items-end justify-center gap-4 mb-4">
+        {getPodiumOrder().map((student) => (
+          <div key={student.id} className="flex flex-col items-center">
+            <div className="mb-2">{getPodiumIcon(student.rank)}</div>
+
+            <div className="text-center mb-3">
+              <div className="font-semibold text-zinc-800 dark:text-zinc-100 text-lg">
+                {student.name}
+              </div>
+
+              <div className="flex items-center justify-center gap-1 text-rose-600 dark:text-rose-400 mt-1">
+                <Award className="w-4 h-4" />
+                <span className="font-bold text-xl">{student.totalTokens}</span>
+              </div>
+            </div>
+
+            <div
+              className={`w-32 ${getPodiumHeight(student.rank)} bg-gradient-to-t ${
+                student.rank === 1
+                  ? 'from-yellow-500 to-yellow-400'
+                  : student.rank === 2
+                  ? 'from-zinc-400 to-zinc-300'
+                  : 'from-orange-500 to-orange-400'
+              } rounded-t-lg flex items-center justify-center`}
+            >
+              <span className="text-white font-bold text-3xl">
+                {student.rank}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Rest of leaderboard */}
+    <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-sm overflow-hidden">
+      <div className="bg-zinc-50 dark:bg-zinc-700 px-6 py-3 border-b border-zinc-200 dark:border-zinc-600">
+        <h3 className="font-semibold text-zinc-800 dark:text-zinc-100">
+          Rankings
+        </h3>
+      </div>
+
+      <div className="divide-y divide-zinc-200 dark:divide-zinc-700">
+        {rest.map((student) => (
+          <div
+            key={student.id}
+            className="px-6 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors flex items-center justify-between"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-zinc-200 dark:bg-zinc-600 rounded-full flex items-center justify-center">
+                <span className="font-bold text-zinc-700 dark:text-zinc-100">
+                  {student.rank}
+                </span>
+              </div>
+
+              <div>
+                <div className="font-semibold text-zinc-800 dark:text-zinc-100">
+                  {student.name}
+                </div>
+
+                {student.totalTokens >= 16 && (
+                  <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                    Eligible
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400">
+              <Award className="w-5 h-5" />
+              <span className="font-bold text-xl">{student.totalTokens}</span>
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                tokens
+              </span>
+            </div>
+          </div>
+        ))}
+
+        {rest.length === 0 && (
+          <div className="text-center py-6 text-zinc-500 dark:text-zinc-400">
+            No students found for selected filters.
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+);
 }

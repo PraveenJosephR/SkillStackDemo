@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import {
   Activity,
   GraduationCap,
@@ -8,6 +8,8 @@ import {
   Brain,
   Plus,
   BellRing,
+  Sun,
+  Moon,
   Users,
   Map,
   Trophy,
@@ -71,6 +73,15 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
   const [showRight, setShowRight] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (darkMode) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [darkMode]);
 
   const notifications = [
     { id: 1, message: "Your Internship activity was approved." },
@@ -169,173 +180,188 @@ export default function MainApp({ onLogout, isStaff }: MainAppProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="bg-blue-600 p-2 rounded-lg">
-                <Brain className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-800">SkillStack</h1>
-                <p className="text-xs text-gray-600">Sathyabama Activity Portal</p>
-              </div>
+  <div className="min-h-screen bg-zinc-100 dark:bg-zinc-900 transition-colors duration-300">
+    <header className="bg-white dark:bg-zinc-800 shadow-sm sticky top-0 z-50 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center gap-3">
+            <div className="bg-rose-600 p-2 rounded-lg">
+              <Brain className="w-6 h-6 text-white" />
             </div>
-            <div className="relative flex items-center gap-4">
+            <div>
+              <h1 className="text-xl font-bold text-zinc-800 dark:text-white">
+                SkillStack
+              </h1>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                Sathyabama Activity Portal
+              </p>
+            </div>
+          </div>
 
-              {/* Tokens - Only Student */}
-              {isStaff === 0 && (
-                <div className="flex items-center gap-1 bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">
-                  <Coins className="w-4 h-4" />
-                  {tokens}
-                  <Plus onClick={() => { setCurrentPage('select') }} className="w-4 h-4 hover:cursor-pointer" />
-                </div>
-              )}
-              <div className="relative">
-                {/* Bell Button */}
-                <button
-                  onClick={() => setNotificationOpen(!notificationOpen)}
-                  className="relative p-2 rounded-full hover:bg-gray-100 transition"
-                >
-                  <Bell className="w-6 h-6 text-gray-700" />
+          <div className="relative flex items-center gap-4">
 
-                  {/* Red Dot */}
-                  {notifications.length > 0 && (
-                    <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
-                  )}
-                </button>
-
-                {/* Dropdown */}
-                {notificationOpen && (
-                  <div className="absolute right-0 mt-3 w-80 bg-white shadow-xl rounded-xl border z-50">
-                    <div className="p-4 border-b font-semibold text-gray-700">
-                      Notifications
-                    </div>
-
-                    <div className="max-h-72 overflow-y-auto">
-                      {notifications.length === 0 ? (
-                        <div className="p-4 text-sm text-gray-500">
-                          No notifications
-                        </div>
-                      ) : (
-                        notifications.map((n) => (
-                          <div
-                            key={n.id}
-                            className="px-4 py-3 text-sm hover:bg-gray-50 border-b last:border-b-0"
-                          >
-                            {n.message}
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* User Avatar */}
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="w-9 h-9 rounded-full overflow-hidden border"
-              >
-                <img
-                  src="/assets/img/user icon.png"
-                  alt="User"
-                  className="w-full h-full object-cover"
-                  onDoubleClick={() => { setCurrentPage('profile') }}
+            {/* Tokens - Only Student */}
+            {isStaff === 0 && (
+              <div className="flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400 px-3 py-1 rounded-full text-sm font-medium">
+                <Coins className="w-4 h-4" />
+                {tokens}
+                <Plus
+                  onClick={() => { setCurrentPage('select') }}
+                  className="w-4 h-4 hover:cursor-pointer"
                 />
+              </div>
+            )}
+
+            {/* Dark Mode Toggle */}
+            {darkMode ? (
+              <Moon
+                onClick={() => setDarkMode(false)}
+                className="w-5 h-5 text-white hover:cursor-pointer"
+              />
+            ) : (
+              <Sun
+                onClick={() => setDarkMode(true)}
+                className="w-5 h-5 text-yellow-500 hover:cursor-pointer"
+              />
+            )}
+
+            <div className="relative">
+              <button
+                onClick={() => setNotificationOpen(!notificationOpen)}
+                className="relative p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 transition"
+              >
+                <Bell className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
+
+                {notifications.length > 0 && (
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white dark:ring-zinc-800"></span>
+                )}
               </button>
 
-              {/* Dropdown */}
-              {menuOpen && (
-                <div className="absolute right-0 top-12 w-40 bg-white shadow-lg rounded-lg border z-50">
-                  <div className="px-4 py-3">
-                    <p className="text-sm font-semibold text-gray-800">
-                      Joseph E
-                    </p>
+              {notificationOpen && (
+                <div className="absolute right-0 mt-3 w-80 bg-white dark:bg-zinc-800 shadow-xl rounded-xl border border-zinc-200 dark:border-zinc-700 z-50 transition-colors duration-300">
+                  <div className="p-4 border-b border-zinc-200 dark:border-zinc-700 font-semibold text-zinc-700 dark:text-zinc-200">
+                    Notifications
                   </div>
 
-                  {/* Divider */}
-                  <div className="h-px bg-gray-200" />
-                  {isStaff === 0 && (
-                    <button
-                      onClick={() => {
-                        setCurrentPage('profile');
-                        setMenuOpen(false);
-                      }}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
-                    >
-                      Profile
-                    </button>
-                  )}
-
-
-                  <button
-                    onClick={() => {
-                      onLogout();
-                      setMenuOpen(false);
-                    }}
-                    className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-red-100 text-sm text-red-600 rounded-b-lg"
-                  >
-                    <LogOut size={16} />
-                    Logout
-                  </button>
+                  <div className="max-h-72 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="p-4 text-sm text-zinc-500 dark:text-zinc-400">
+                        No notifications
+                      </div>
+                    ) : (
+                      notifications.map((n) => (
+                        <div
+                          key={n.id}
+                          className="px-4 py-3 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-700 border-b border-zinc-200 dark:border-zinc-700 last:border-b-0 text-zinc-700 dark:text-zinc-200"
+                        >
+                          {n.message}
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </div>
               )}
             </div>
-          </div>
-        </div>
-      </header>
 
-      <nav className="bg-white shadow-sm border-b border-gray-200 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            {/* User Avatar */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="w-9 h-9 rounded-full overflow-hidden border border-zinc-300 dark:border-zinc-600"
+            >
+              <img
+                src="/assets/img/user icon.png"
+                alt="User"
+                className="w-full h-full object-cover"
+                onDoubleClick={() => { setCurrentPage('profile') }}
+              />
+            </button>
 
-          {/* Left Arrow */}
-          <button
-            onClick={() => scrollContainer?.scrollBy({ left: -200, behavior: 'smooth' })}
-            className={`absolute left-0 top-0 bottom-0 z-10 px-2 ${showLeft ? 'flex' : 'hidden'
-              } items-center`}
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-400" />
-          </button>
+            {menuOpen && (
+              <div className="absolute right-0 top-12 w-40 bg-white dark:bg-zinc-800 shadow-lg rounded-lg border border-zinc-200 dark:border-zinc-700 z-50 transition-colors duration-300">
+                <div className="px-4 py-3">
+                  <p className="text-sm font-semibold text-zinc-800 dark:text-white">
+                    Joseph E
+                  </p>
+                </div>
 
-          {/* Scroll Container */}
-          <div
-            ref={(el) => setScrollContainer(el)}
-            onScroll={(e) => handleScroll(e)}
-            className="flex overflow-x-auto scrollbar-hide"
-          >
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
+                <div className="h-px bg-zinc-200 dark:bg-zinc-700" />
+
+                {isStaff === 0 && (
+                  <button
+                    onClick={() => {
+                      setCurrentPage('profile');
+                      setMenuOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-sm text-zinc-700 dark:text-zinc-200"
+                  >
+                    Profile
+                  </button>
+                )}
+
                 <button
-                  key={item.id}
-                  onClick={() => setCurrentPage(item.id)}
-                  className={`flex items-center gap-2 px-4 py-4 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${currentPage === item.id
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
-                    }`}
+                  onClick={() => {
+                    onLogout();
+                    setMenuOpen(false);
+                  }}
+                  className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-sm text-rose-600 dark:text-rose-400 rounded-b-lg"
                 >
-                  <Icon className="w-5 h-5" />
-                  <span className="hidden sm:inline">{item.name}</span>
+                  <LogOut size={16} />
+                  Logout
                 </button>
-              );
-            })}
+              </div>
+            )}
           </div>
-
-          {/* Right Arrow */}
-          <button
-            onClick={() => scrollContainer?.scrollBy({ left: 200, behavior: 'smooth' })}
-            className={`absolute right-0 top-0 bottom-0 z-10 px-2 ${showRight ? 'flex' : 'hidden'
-              } items-center`}
-          >
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
-
         </div>
-      </nav>
+      </div>
+    </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">{renderPage()}</main>
-    </div>
-  );
+    <nav className="bg-white dark:bg-zinc-800 shadow-sm border-b border-zinc-200 dark:border-zinc-700 relative transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+
+        <button
+          onClick={() => scrollContainer?.scrollBy({ left: -200, behavior: 'smooth' })}
+          className={`absolute left-0 top-0 bottom-0 z-10 px-2 ${showLeft ? 'flex' : 'hidden'} items-center`}
+        >
+          <ChevronLeft className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />
+        </button>
+
+        <div
+          ref={(el) => setScrollContainer(el)}
+          onScroll={(e) => handleScroll(e)}
+          className="flex overflow-x-auto scrollbar-hide"
+        >
+          {navigation.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setCurrentPage(item.id)}
+                className={`flex items-center gap-2 px-4 py-4 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+                  currentPage === item.id
+                    ? 'border-rose-600 text-rose-600'
+                    : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="hidden sm:inline">{item.name}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          onClick={() => scrollContainer?.scrollBy({ left: 200, behavior: 'smooth' })}
+          className={`absolute right-0 top-0 bottom-0 z-10 px-2 ${showRight ? 'flex' : 'hidden'} items-center`}
+        >
+          <ChevronRight className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />
+        </button>
+
+      </div>
+    </nav>
+
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {renderPage()}
+    </main>
+  </div>
+);
 }

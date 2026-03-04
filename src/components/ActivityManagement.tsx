@@ -186,280 +186,268 @@ export default function ActivityManagement() {
         }
     };
 
-    return (
-        <div className="relative">
-            {/* Header */}
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-semibold text-gray-800">
-                    Activity Management
-                </h1>
-                <div className="flex gap-3">
-                    <button
-                        onClick={() => {
-                            setTempMinTokens(minTokensPerSem.toString());
-                            setMinTokenModalOpen(true);
-                        }}
-                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
-                    >
-                        Set Min Tokens / Sem
-                    </button>
+   return (
+    <div className="relative">
 
-                    <button
-                        onClick={openCreate}
-                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
-                    >
-                        <Plus className="w-4 h-4" />
-                        Add Activity
-                    </button>
-                </div>
-            </div>
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-semibold text-gray-800 dark:text-zinc-100">
+                Activity Management
+            </h1>
+            <div className="flex gap-3">
+                <button
+                    onClick={() => {
+                        setTempMinTokens(minTokensPerSem.toString());
+                        setMinTokenModalOpen(true);
+                    }}
+                    className="flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg transition"
+                >
+                    Set Min Tokens / Sem
+                </button>
 
-            {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-                <table className="min-w-full text-sm">
-                    <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
-                        <tr>
-                            <th className="px-6 py-3 text-left">Activity</th>
-                            <th className="px-6 py-3 text-left">Tokens</th>
-                            <th className="px-6 py-3 text-left">Limit / Sem</th>
-                            <th className="px-6 py-3 text-left">Type</th>
-                            <th className="px-6 py-3 text-left">Created</th>
-                            <th className="px-6 py-3 text-left">Updated</th>
-                            <th className="px-6 py-3 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {activities.map((a) => (
-                            <tr key={a.id} className="border-t hover:bg-gray-50">
-                                <td className="px-6 py-4">
-                                    <div className="font-medium text-gray-800">{a.name}</div>
-                                    <div className="text-xs text-gray-500">
-                                        {a.description}
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 text-xs text-gray-500">{a.tokens}</td>
-                                <td className="px-6 py-4 text-xs text-gray-500">{a.activityLimitPerSem}</td>
-                                <td className="px-6 py-4">
-                                    <span
-                                        className={`px-2 py-1 text-xs rounded-full ${a.type === 'Internal'
-                                            ? 'bg-green-100 text-green-700'
-                                            : 'bg-purple-100 text-purple-700'
-                                            }`}
-                                    >
-                                        {a.type}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 text-xs text-gray-500">
-                                    {a.createdAt}
-                                </td>
-
-                                <td className="px-6 py-4 text-xs text-gray-500">
-                                    {a.updatedAt}
-                                </td>
-                                <td className="px-6 py-4 text-right relative">
-                                    <button
-                                        onClick={() => openEdit(a)}
-                                        className="text-blue-600 hover:text-blue-800 mr-3"
-                                    >
-                                        <Pencil className="w-4 h-4 inline" />
-                                    </button>
-
-                                    <button
-                                        onClick={() => setDeleteId(a.id)}
-                                        className="text-red-600 hover:text-red-800"
-                                    >
-                                        <Trash2 className="w-4 h-4 inline" />
-                                    </button>
-
-                                    {/* Delete Tooltip */}
-                                    {deleteId !== null && (
-                                        <div className="fixed inset-0 z-50 flex items-center justify-center">
-
-                                            {/* Overlay */}
-                                            <div
-                                                className="absolute inset-0 bg-black/40"
-                                                onClick={() => setDeleteId(null)}
-                                            />
-
-                                            {/* Modal */}
-                                            <div className="relative bg-white rounded-xl shadow-2xl w-96 p-8 z-50 text-center">
-
-                                                <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                                                    Delete Activity
-                                                </h3>
-
-                                                <p className="text-sm text-gray-600 mb-6">
-                                                    Are you sure you want to delete this activity?
-                                                    <br />
-                                                    This action cannot be undone.
-                                                </p>
-
-                                                <div className="flex justify-center gap-4">
-                                                    <button
-                                                        onClick={() => setDeleteId(null)}
-                                                        className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
-                                                    >
-                                                        Cancel
-                                                    </button>
-
-                                                    <button
-                                                        onClick={confirmDelete}
-                                                        className="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-
-                        {activities.length === 0 && (
-                            <tr>
-                                <td
-                                    colSpan={6}
-                                    className="text-center py-10 text-gray-400"
-                                >
-                                    No activities created yet.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Overlay */}
-            {drawerOpen && (
-                <div
-                    className="fixed inset-0 bg-black bg-opacity-30 z-30"
-                    onClick={() => setDrawerOpen(false)}
-                />
-            )}
-            {minTokenModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-
-                    {/* Overlay */}
-                    <div
-                        className="absolute inset-0 bg-black/40"
-                        onClick={() => setMinTokenModalOpen(false)}
-                    />
-
-                    {/* Modal */}
-                    <div className="relative bg-white rounded-xl shadow-2xl w-96 p-8 z-50">
-
-                        <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">
-                            Set Minimum Tokens Per Semester
-                        </h3>
-
-                        <input
-                            type="number"
-                            value={tempMinTokens}
-                            onChange={(e) => setTempMinTokens(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-6"
-                            placeholder="Enter minimum tokens"
-                        />
-
-                        <div className="flex justify-center gap-4">
-                            <button
-                                onClick={() => setMinTokenModalOpen(false)}
-                                className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
-                            >
-                                Cancel
-                            </button>
-
-                            <button
-                                onClick={() => {
-                                    setMinTokensPerSem(Number(tempMinTokens));
-                                    setMinTokenModalOpen(false);
-                                }}
-                                className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                            >
-                                Save
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-            )}
-
-            {/* Right Sliding Drawer */}
-            <div
-                className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-96 bg-white shadow-2xl z-40 transform transition-transform duration-300 ${drawerOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}
-            >
-                <div className="flex justify-between items-center p-6 border-b">
-                    <h2 className="text-lg font-semibold">
-                        {editingId ? 'Edit Activity' : 'Add Activity'}
-                    </h2>
-                    <button onClick={() => setDrawerOpen(false)}>
-                        <X className="w-5 h-5" />
-                    </button>
-                </div>
-
-                <div className="p-6 space-y-4">
-                    <input
-                        type="text"
-                        placeholder="Activity Name"
-                        value={form.name}
-                        onChange={(e) =>
-                            setForm({ ...form, name: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-
-                    <textarea
-                        placeholder="Description"
-                        value={form.description}
-                        onChange={(e) =>
-                            setForm({ ...form, description: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-
-                    <input
-                        type="number"
-                        placeholder="Tokens"
-                        value={form.tokens}
-                        onChange={(e) =>
-                            setForm({ ...form, tokens: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                    <input
-                        type="number"
-                        placeholder="Activity Limit Per Semester"
-                        value={form.activityLimitPerSem}
-                        onChange={(e) =>
-                            setForm({ ...form, activityLimitPerSem: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-
-                    <select
-                        value={form.type}
-                        onChange={(e) =>
-                            setForm({
-                                ...form,
-                                type: e.target.value as 'Internal' | 'External',
-                            })
-                        }
-                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    >
-                        <option value="Internal">Internal College</option>
-                        <option value="External">External Event</option>
-                    </select>
-
-                    <button
-                        onClick={handleSubmit}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
-                    >
-                        {editingId ? 'Update Activity' : 'Create Activity'}
-                    </button>
-                </div>
+                <button
+                    onClick={openCreate}
+                    className="flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg transition"
+                >
+                    <Plus className="w-4 h-4" />
+                    Add Activity
+                </button>
             </div>
         </div>
-    );
+
+        {/* Table */}
+        <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border dark:border-zinc-700 overflow-hidden">
+            <table className="min-w-full text-sm">
+                <thead className="bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-zinc-300 uppercase text-xs">
+                    <tr>
+                        <th className="px-6 py-3 text-left">Activity</th>
+                        <th className="px-6 py-3 text-left">Tokens</th>
+                        <th className="px-6 py-3 text-left">Limit / Sem</th>
+                        <th className="px-6 py-3 text-left">Type</th>
+                        <th className="px-6 py-3 text-left">Created</th>
+                        <th className="px-6 py-3 text-left">Updated</th>
+                        <th className="px-6 py-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {activities.map((a) => (
+                        <tr key={a.id} className="border-t dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700">
+                            <td className="px-6 py-4">
+                                <div className="font-medium text-gray-800 dark:text-zinc-100">{a.name}</div>
+                                <div className="text-xs text-gray-500 dark:text-zinc-400">
+                                    {a.description}
+                                </div>
+                            </td>
+                            <td className="px-6 py-4 text-xs text-gray-500 dark:text-zinc-400">{a.tokens}</td>
+                            <td className="px-6 py-4 text-xs text-gray-500 dark:text-zinc-400">{a.activityLimitPerSem}</td>
+                            <td className="px-6 py-4">
+                                <span
+                                    className={`px-2 py-1 text-xs rounded-full ${a.type === 'Internal'
+                                        ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300'
+                                        : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
+                                        }`}
+                                >
+                                    {a.type}
+                                </span>
+                            </td>
+                            <td className="px-6 py-4 text-xs text-gray-500 dark:text-zinc-400">
+                                {a.createdAt}
+                            </td>
+                            <td className="px-6 py-4 text-xs text-gray-500 dark:text-zinc-400">
+                                {a.updatedAt}
+                            </td>
+                            <td className="px-6 py-4 text-right relative">
+                                <button
+                                    onClick={() => openEdit(a)}
+                                    className="text-rose-600 hover:text-rose-800 dark:text-rose-400 dark:hover:text-rose-300 mr-3"
+                                >
+                                    <Pencil className="w-4 h-4 inline" />
+                                </button>
+
+                                <button
+                                    onClick={() => setDeleteId(a.id)}
+                                    className="text-rose-600 hover:text-rose-800 dark:text-rose-400 dark:hover:text-rose-300"
+                                >
+                                    <Trash2 className="w-4 h-4 inline" />
+                                </button>
+
+                                {deleteId !== null && (
+                                    <div className="fixed inset-0 z-50 flex items-center justify-center">
+                                        <div
+                                            className="absolute inset-0 bg-black/50"
+                                            onClick={() => setDeleteId(null)}
+                                        />
+                                        <div className="relative bg-white dark:bg-zinc-800 rounded-xl shadow-2xl w-96 p-8 z-50 text-center">
+                                            <h3 className="text-xl font-semibold text-gray-800 dark:text-zinc-100 mb-4">
+                                                Delete Activity
+                                            </h3>
+
+                                            <p className="text-sm text-gray-600 dark:text-zinc-400 mb-6">
+                                                Are you sure you want to delete this activity?
+                                                <br />
+                                                This action cannot be undone.
+                                            </p>
+
+                                            <div className="flex justify-center gap-4">
+                                                <button
+                                                    onClick={() => setDeleteId(null)}
+                                                    className="px-5 py-2 bg-gray-200 dark:bg-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-gray-300 dark:hover:bg-zinc-600 transition"
+                                                >
+                                                    Cancel
+                                                </button>
+
+                                                <button
+                                                    onClick={confirmDelete}
+                                                    className="px-5 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+
+                    {activities.length === 0 && (
+                        <tr>
+                            <td
+                                colSpan={6}
+                                className="text-center py-10 text-gray-400 dark:text-zinc-500"
+                            >
+                                No activities created yet.
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+        </div>
+
+        {drawerOpen && (
+            <div
+                className="fixed inset-0 bg-black/40 z-30"
+                onClick={() => setDrawerOpen(false)}
+            />
+        )}
+
+        {minTokenModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div
+                    className="absolute inset-0 bg-black/50"
+                    onClick={() => setMinTokenModalOpen(false)}
+                />
+                <div className="relative bg-white dark:bg-zinc-800 rounded-xl shadow-2xl w-96 p-8 z-50">
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-zinc-100 mb-6 text-center">
+                        Set Minimum Tokens Per Semester
+                    </h3>
+
+                    <input
+                        type="number"
+                        value={tempMinTokens}
+                        onChange={(e) => setTempMinTokens(e.target.value)}
+                        className="w-full px-3 py-2 border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-rose-500 mb-6"
+                        placeholder="Enter minimum tokens"
+                    />
+
+                    <div className="flex justify-center gap-4">
+                        <button
+                            onClick={() => setMinTokenModalOpen(false)}
+                            className="px-5 py-2 bg-gray-200 dark:bg-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-gray-300 dark:hover:bg-zinc-600 transition"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                setMinTokensPerSem(Number(tempMinTokens));
+                                setMinTokenModalOpen(false);
+                            }}
+                            className="px-5 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* Drawer */}
+        <div
+            className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-96 bg-white dark:bg-zinc-800 shadow-2xl z-40 transform transition-transform duration-300 ${drawerOpen ? 'translate-x-0' : 'translate-x-full'
+                }`}
+        >
+            <div className="flex justify-between items-center p-6 border-b dark:border-zinc-700">
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-zinc-100">
+                    {editingId ? 'Edit Activity' : 'Add Activity'}
+                </h2>
+                <button onClick={() => setDrawerOpen(false)}>
+                    <X className="w-5 h-5 text-gray-700 dark:text-zinc-300" />
+                </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+                <input
+                    type="text"
+                    placeholder="Activity Name"
+                    value={form.name}
+                    onChange={(e) =>
+                        setForm({ ...form, name: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-rose-500"
+                />
+
+                <textarea
+                    placeholder="Description"
+                    value={form.description}
+                    onChange={(e) =>
+                        setForm({ ...form, description: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-rose-500"
+                />
+
+                <input
+                    type="number"
+                    placeholder="Tokens"
+                    value={form.tokens}
+                    onChange={(e) =>
+                        setForm({ ...form, tokens: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-rose-500"
+                />
+
+                <input
+                    type="number"
+                    placeholder="Activity Limit Per Semester"
+                    value={form.activityLimitPerSem}
+                    onChange={(e) =>
+                        setForm({ ...form, activityLimitPerSem: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-rose-500"
+                />
+
+                <select
+                    value={form.type}
+                    onChange={(e) =>
+                        setForm({
+                            ...form,
+                            type: e.target.value as 'Internal' | 'External',
+                        })
+                    }
+                    className="w-full px-3 py-2 border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-rose-500"
+                >
+                    <option value="Internal">Internal College</option>
+                    <option value="External">External Event</option>
+                </select>
+
+                <button
+                    onClick={handleSubmit}
+                    className="w-full bg-rose-600 hover:bg-rose-700 text-white py-2 rounded-lg transition"
+                >
+                    {editingId ? 'Update Activity' : 'Create Activity'}
+                </button>
+            </div>
+        </div>
+    </div>
+);
 }

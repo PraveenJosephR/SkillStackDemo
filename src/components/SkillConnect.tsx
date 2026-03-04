@@ -216,92 +216,96 @@ const filteredStudents: StudentWithMatches[] = useMemo(() => {
     );
 }, [keyword]);
 
-  return (
-    <div className="space-y-8">
+ return (
+  <div className="space-y-8">
 
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800">
-          Skill Connect
-        </h1>
-        <p className="text-gray-600 mt-1">
-          Discover skilled students based on completed activities.
-        </p>
-      </div>
-
-      {/* Search */}
-      <div className="relative max-w-2xl">
-        <Search className="absolute left-4 top-3.5 text-gray-400 w-5 h-5" />
-        <input
-          type="text"
-          placeholder="Search skills (AI, React, Robotics...)"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 border rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        />
-      </div>
-
-      {/* Results */}
-      <div className="grid md:grid-cols-2 gap-6">
-
-        {filteredStudents.length === 0 && (
-          <div className="col-span-full text-center text-gray-400 py-10">
-            No matching students found.
-          </div>
-        )}
-
-        {filteredStudents.map((student) => (
-          <div
-            key={student.id}
-            className="bg-white rounded-2xl shadow-sm border p-6 hover:shadow-md transition"
-          >
-
-            {/* Student Info */}
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="font-semibold text-lg">{student.name}</h3>
-                <p className="text-sm text-gray-500">
-                  {student.department} • {student.program} • {student.year}
-                </p>
-                <p className="text-xs text-gray-400 mt-1">
-                  Section: {student.section} • Incharge: {student.staffIncharge}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                <Award className="w-4 h-4" />
-                {student.tokens} Tokens
-              </div>
-            </div>
-
-            {/* Activities */}
-            <div className="space-y-3">
-              {(keyword ? student.matchedActivities : student.activities.filter(a => a.status === 'Completed'))
-                .map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="bg-gray-50 rounded-lg p-3 border"
-                  >
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-medium flex items-center gap-2">
-                        <BookOpen className="w-4 h-4 text-blue-500" />
-                        {activity.title}
-                      </h4>
-                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
-                        {activity.tokens} Tokens
-                      </span>
-                    </div>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {activity.description}
-                      </p>
-                  </div>
-              ))}
-            </div>
-
-          </div>
-        ))}
-
-      </div>
+    {/* Header */}
+    <div>
+      <h1 className="text-3xl font-bold text-zinc-800 dark:text-zinc-100">
+        Skill Connect
+      </h1>
+      <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+        Discover skilled students based on completed activities.
+      </p>
     </div>
-  );
+
+    {/* Search */}
+    <div className="relative max-w-2xl">
+      <Search className="absolute left-4 top-3.5 text-zinc-400 dark:text-zinc-500 w-5 h-5" />
+      <input
+        type="text"
+        placeholder="Search skills (AI, React, Robotics...)"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        className="w-full pl-12 pr-4 py-3 border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 rounded-xl shadow-sm focus:ring-2 focus:ring-rose-500 focus:outline-none"
+      />
+    </div>
+
+    {/* Results */}
+    <div className="grid md:grid-cols-2 gap-6">
+
+      {filteredStudents.length === 0 && (
+        <div className="col-span-full text-center text-zinc-400 dark:text-zinc-500 py-10">
+          No matching students found.
+        </div>
+      )}
+
+      {filteredStudents.map((student) => (
+        <div
+          key={student.id}
+          className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-sm p-6 hover:shadow-md dark:hover:bg-zinc-700 transition"
+        >
+
+          {/* Student Info */}
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h3 className="font-semibold text-lg text-zinc-800 dark:text-zinc-100">
+                {student.name}
+              </h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                {student.department} • {student.program} • {student.year}
+              </p>
+              <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
+                Section: {student.section} • Incharge: {student.staffIncharge}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-1 bg-green-100 dark:bg-green-900/40 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full text-sm">
+              <Award className="w-4 h-4" />
+              {student.tokens} Tokens
+            </div>
+          </div>
+
+          {/* Activities */}
+          <div className="space-y-3">
+            {(keyword
+              ? student.matchedActivities
+              : student.activities.filter(a => a.status === 'Completed')
+            ).map((activity) => (
+              <div
+                key={activity.id}
+                className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg p-3"
+              >
+                <div className="flex justify-between items-center">
+                  <h4 className="font-medium flex items-center gap-2 text-zinc-800 dark:text-zinc-100">
+                    <BookOpen className="w-4 h-4 text-rose-500 dark:text-rose-400" />
+                    {activity.title}
+                  </h4>
+                  <span className="text-xs bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 px-2 py-1 rounded-full">
+                    {activity.tokens} Tokens
+                  </span>
+                </div>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                  {activity.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      ))}
+
+    </div>
+  </div>
+);
 }

@@ -271,280 +271,275 @@ export default function UserManagement() {
         }
     };
 
-    return (
-        <div className="bg-white rounded-xl shadow-sm border">
-            {/* Header */}
-            <div className="flex justify-between items-center p-6 border-b">
-                <h2 className="text-xl font-semibold">User Management</h2>
-                <button
-                    onClick={openCreate}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                >
-                    <Plus className="w-4 h-4" />
-                    Add User
+  return (
+    <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border dark:border-zinc-700">
+        {/* Header */}
+        <div className="flex justify-between items-center p-6 border-b dark:border-zinc-700">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-zinc-100">
+                User Management
+            </h2>
+            <button
+                onClick={openCreate}
+                className="flex items-center gap-2 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition"
+            >
+                <Plus className="w-4 h-4" />
+                Add User
+            </button>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+                <thead className="bg-gray-50 dark:bg-zinc-700 text-gray-600 dark:text-zinc-300 uppercase text-xs">
+                    <tr>
+                        <th className="px-6 py-4">Name</th>
+                        <th className="px-6 py-4">Role</th>
+                        <th className="px-6 py-4">Gender</th>
+                        <th className="px-6 py-4">Program</th>
+                        <th className="px-6 py-4">Department</th>
+                        <th className="px-6 py-4">Batch</th>
+                        <th className="px-6 py-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((user) => (
+                        <tr key={user.id} className="border-t dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700">
+                            <td className="px-6 py-4 text-gray-800 dark:text-zinc-100">{user.name}</td>
+                            <td className="px-6 py-4 text-gray-600 dark:text-zinc-300">{user.role}</td>
+                            <td className="px-6 py-4 text-gray-600 dark:text-zinc-300">{user.gender}</td>
+                            <td className="px-6 py-4 text-gray-600 dark:text-zinc-300">{user.program}</td>
+                            <td className="px-6 py-4 text-gray-600 dark:text-zinc-300">{user.department}</td>
+                            <td className="px-6 py-4 text-gray-600 dark:text-zinc-300">{user.batch}</td>
+                            <td className="px-6 py-4 flex gap-3 relative">
+                                <button onClick={() => openEdit(user)}>
+                                    <Pencil className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                                </button>
+                                <button onClick={() => setDeleteConfirm(user.id)}>
+                                    <Trash2 className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                                </button>
+
+                                {deleteConfirm === user.id && (
+                                    <div className="absolute top-8 right-0 bg-white dark:bg-zinc-800 shadow-lg border dark:border-zinc-700 rounded-lg p-4 text-sm z-50">
+                                        <p className="mb-3 text-gray-700 dark:text-zinc-300">Are you sure?</p>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => handleDelete(user.id)}
+                                                className="px-3 py-1 bg-rose-600 text-white rounded"
+                                            >
+                                                Yes
+                                            </button>
+                                            <button
+                                                onClick={() => setDeleteConfirm(null)}
+                                                className="px-3 py-1 bg-gray-200 dark:bg-zinc-700 dark:text-zinc-200 rounded"
+                                            >
+                                                No
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+
+        {/* Right Drawer */}
+        <div
+            className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-96 bg-white dark:bg-zinc-800 shadow-2xl z-40 transform transition-transform duration-300 ${drawerOpen ? 'translate-x-0' : 'translate-x-full'
+                }`}
+        >
+            <div className="flex justify-between items-center p-6 border-b dark:border-zinc-700">
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-zinc-100">
+                    {editingId ? 'Edit User' : 'Add User'}
+                </h2>
+                <button onClick={() => setDrawerOpen(false)}>
+                    <X className="w-5 h-5 text-gray-700 dark:text-zinc-300" />
                 </button>
             </div>
 
-            {/* Table */}
-            <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                    <thead className="bg-gray-50 text-gray-600 uppercase text-xs">
-                        <tr>
-                            <th className="px-6 py-4">Name</th>
-                            <th className="px-6 py-4">Role</th>
-                            <th className="px-6 py-4">Gender</th>
-                            <th className="px-6 py-4">Program</th>
-                            <th className="px-6 py-4">Department</th>
-                            <th className="px-6 py-4">Batch</th>
-                            <th className="px-6 py-4">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr key={user.id} className="border-t hover:bg-gray-50">
-                                <td className="px-6 py-4">{user.name}</td>
-                                <td className="px-6 py-4">{user.role}</td>
-                                <td className="px-6 py-4">{user.gender}</td>
-                                <td className="px-6 py-4">{user.program}</td>
-                                <td className="px-6 py-4">{user.department}</td>
-                                <td className="px-6 py-4">{user.batch}</td>
-                                <td className="px-6 py-4 flex gap-3 relative">
-                                    <button onClick={() => openEdit(user)}>
-                                        <Pencil className="w-4 h-4 text-blue-600" />
-                                    </button>
-                                    <button onClick={() => setDeleteConfirm(user.id)}>
-                                        <Trash2 className="w-4 h-4 text-red-600" />
-                                    </button>
+            {/* Tabs */}
+            <div className="flex border-b dark:border-zinc-700">
+                <button
+                    onClick={() => {
+                        setActiveTab('Student');
+                        setForm({ ...form, role: 'Student' });
+                    }}
+                    className={`flex-1 py-2 text-sm font-medium ${activeTab === 'Student'
+                        ? 'border-b-2 border-rose-600 text-rose-600'
+                        : 'text-gray-500 dark:text-zinc-400'
+                        }`}
+                >
+                    Student
+                </button>
 
-                                    {deleteConfirm === user.id && (
-                                        <div className="absolute top-8 right-0 bg-white shadow-lg border rounded-lg p-4 text-sm z-50">
-                                            <p className="mb-3">Are you sure?</p>
-                                            <div className="flex gap-2">
-                                                <button
-                                                    onClick={() => handleDelete(user.id)}
-                                                    className="px-3 py-1 bg-red-600 text-white rounded"
-                                                >
-                                                    Yes
-                                                </button>
-                                                <button
-                                                    onClick={() => setDeleteConfirm(null)}
-                                                    className="px-3 py-1 bg-gray-200 rounded"
-                                                >
-                                                    No
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <button
+                    onClick={() => {
+                        setActiveTab('Staff');
+                        setForm({ ...form, role: 'Staff' });
+                    }}
+                    className={`flex-1 py-2 text-sm font-medium ${activeTab === 'Staff'
+                        ? 'border-b-2 border-rose-600 text-rose-600'
+                        : 'text-gray-500 dark:text-zinc-400'
+                        }`}
+                >
+                    Staff
+                </button>
             </div>
 
-            {/* Right Drawer */}
-            {/* Right Drawer */}
-            <div
-                className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-96 bg-white shadow-2xl z-40 transform transition-transform duration-300 ${drawerOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}
-            >
-                <div className="flex justify-between items-center p-6 border-b">
-                    <h2 className="text-lg font-semibold">
-                        {editingId ? 'Edit User' : 'Add User'}
-                    </h2>
-                    <button onClick={() => setDrawerOpen(false)}>
-                        <X className="w-5 h-5" />
-                    </button>
-                </div>
+            <div className="p-6 space-y-4 overflow-y-auto h-[calc(100%-120px)]">
 
-                {/* Tabs */}
-                <div className="flex border-b">
-                    <button
-                        onClick={() => {
-                            setActiveTab('Student');
-                            setForm({ ...form, role: 'Student' });
-                        }}
-                        className={`flex-1 py-2 text-sm font-medium ${activeTab === 'Student'
-                            ? 'border-b-2 border-blue-600 text-blue-600'
-                            : 'text-gray-500'
-                            }`}
-                    >
-                        Student
-                    </button>
+                <input
+                    type="text"
+                    placeholder="Name"
+                    className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
 
-                    <button
-                        onClick={() => {
-                            setActiveTab('Staff');
-                            setForm({ ...form, role: 'Staff' });
-                        }}
-                        className={`flex-1 py-2 text-sm font-medium ${activeTab === 'Staff'
-                            ? 'border-b-2 border-blue-600 text-blue-600'
-                            : 'text-gray-500'
-                            }`}
-                    >
-                        Staff
-                    </button>
-                </div>
+                <select
+                    className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                    value={form.gender}
+                    onChange={(e) =>
+                        setForm({ ...form, gender: e.target.value as any })
+                    }
+                >
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
 
-                <div className="p-6 space-y-4 overflow-y-auto h-[calc(100%-120px)]">
+                <select
+                    className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                    value={form.department}
+                    onChange={(e) =>
+                        setForm({ ...form, department: e.target.value as any })
+                    }
+                >
+                    <option>CSE</option>
+                    <option>ECE</option>
+                    <option>EEE</option>
+                </select>
 
-                    {/* Basic Fields */}
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        className="w-full border rounded-lg px-4 py-2"
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    />
+                <input
+                    type="text"
+                    placeholder="Batch"
+                    className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                    value={form.batch}
+                    onChange={(e) => setForm({ ...form, batch: e.target.value })}
+                />
 
-                    <select
-                        className="w-full border rounded-lg px-4 py-2"
-                        value={form.gender}
-                        onChange={(e) =>
-                            setForm({ ...form, gender: e.target.value as any })
-                        }
-                    >
-                        <option>Male</option>
-                        <option>Female</option>
-                        <option>Other</option>
-                    </select>
+                <input
+                    type="text"
+                    placeholder="Birthday"
+                    onFocus={(e) => (e.target.type = 'date')}
+                    onBlur={(e) => {
+                        if (!e.target.value) e.target.type = 'text';
+                    }}
+                    className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                    value={form.birthDate}
+                    onChange={(e) =>
+                        setForm({ ...form, birthDate: e.target.value })
+                    }
+                />
 
+                <hr className="dark:border-zinc-700" />
 
+                <input
+                    type="text"
+                    placeholder="Contact Number"
+                    className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                    value={form.contactNumber}
+                    onChange={(e) =>
+                        setForm({ ...form, contactNumber: e.target.value })
+                    }
+                />
 
-                    <select
-                        className="w-full border rounded-lg px-4 py-2"
-                        value={form.department}
-                        onChange={(e) =>
-                            setForm({ ...form, department: e.target.value as any })
-                        }
-                    >
-                        <option>CSE</option>
-                        <option>ECE</option>
-                        <option>EEE</option>
-                    </select>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                    value={form.email}
+                    onChange={(e) =>
+                        setForm({ ...form, email: e.target.value })
+                    }
+                />
 
-                    <input
-                        type="text"
-                        placeholder="Batch"
-                        className="w-full border rounded-lg px-4 py-2"
-                        value={form.batch}
-                        onChange={(e) => setForm({ ...form, batch: e.target.value })}
-                    />
+                {activeTab === 'Student' && (
+                    <>
+                        <input
+                            type="text"
+                            placeholder="Register Number"
+                            className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                            value={form.registerNumber}
+                            onChange={(e) =>
+                                setForm({ ...form, registerNumber: e.target.value })
+                            }
+                        />
 
-                    <input
-                        type="text"
-                        placeholder="Birthday"
-                        onFocus={(e) => (e.target.type = 'date')}
-                        onBlur={(e) => {
-                            if (!e.target.value) e.target.type = 'text';
-                        }}
-                        className="w-full border rounded-lg px-4 py-2"
-                        value={form.birthDate}
-                        onChange={(e) =>
-                            setForm({ ...form, birthDate: e.target.value })
-                        }
-                    />
+                        <input
+                            type="text"
+                            placeholder="Roll Number"
+                            className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                            value={form.rollNumber}
+                            onChange={(e) =>
+                                setForm({ ...form, rollNumber: e.target.value })
+                            }
+                        />
 
-                    <hr />
+                        <select
+                            className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                            value={form.program}
+                            onChange={(e) =>
+                                setForm({ ...form, program: e.target.value as any })
+                            }
+                        >
+                            <option value="BE">BE</option>
+                            <option value="BTech">BTech</option>
+                            <option value="ME">ME</option>
+                            <option value="PhD">PhD</option>
+                        </select>
 
-                    {/* Extra Fields */}
-                    <input
-                        type="text"
-                        placeholder="Contact Number"
-                        className="w-full border rounded-lg px-4 py-2"
-                        value={form.contactNumber}
-                        onChange={(e) =>
-                            setForm({ ...form, contactNumber: e.target.value })
-                        }
-                    />
+                        <input
+                            type="text"
+                            placeholder="Hostel / Dayscholar"
+                            className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                            value={form.hostelType}
+                            onChange={(e) =>
+                                setForm({ ...form, hostelType: e.target.value })
+                            }
+                        />
 
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        className="w-full border rounded-lg px-4 py-2"
-                        value={form.email}
-                        onChange={(e) =>
-                            setForm({ ...form, email: e.target.value })
-                        }
-                    />
+                        <input
+                            type="text"
+                            placeholder="Staff Incharge"
+                            className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                            value={form.staffIncharge}
+                            onChange={(e) =>
+                                setForm({ ...form, staffIncharge: e.target.value })
+                            }
+                        />
+                    </>
+                )}
 
-                    {/* Student Only Fields */}
-                    {activeTab === 'Student' && (
-                        <>
-                            <input
-                                type="text"
-                                placeholder="Register Number"
-                                className="w-full border rounded-lg px-4 py-2"
-                                value={form.registerNumber}
-                                onChange={(e) =>
-                                    setForm({ ...form, registerNumber: e.target.value })
-                                }
-                            />
+                <input
+                    type="text"
+                    placeholder="Boarding Point"
+                    className="w-full border dark:border-zinc-600 bg-white dark:bg-zinc-900 text-gray-800 dark:text-zinc-100 rounded-lg px-4 py-2"
+                    value={form.boardingPoint}
+                    onChange={(e) =>
+                        setForm({ ...form, boardingPoint: e.target.value })
+                    }
+                />
 
-                            <input
-                                type="text"
-                                placeholder="Roll Number"
-                                className="w-full border rounded-lg px-4 py-2"
-                                value={form.rollNumber}
-                                onChange={(e) =>
-                                    setForm({ ...form, rollNumber: e.target.value })
-                                }
-                            />
-                            <select
-                                className="w-full border rounded-lg px-4 py-2"
-                                value={form.program}
-                                onChange={(e) =>
-                                    setForm({ ...form, program: e.target.value as any })
-                                }
-                            >
-                                <option value="BE">BE</option>
-                                <option value="BTech">BTech</option>
-                                <option value="ME">ME</option>
-                                <option value="PhD">PhD</option>
-                            </select>
-                            <input
-                                type="text"
-                                placeholder="Hostel / Dayscholar"
-                                className="w-full border rounded-lg px-4 py-2"
-                                value={form.hostelType}
-                                onChange={(e) =>
-                                    setForm({ ...form, hostelType: e.target.value })
-                                }
-                            />
-                            <input
-                                type="text"
-                                placeholder="Staff Incharge"
-                                className="w-full border rounded-lg px-4 py-2"
-                                value={form.staffIncharge}
-                                onChange={(e) =>
-                                    setForm({ ...form, staffIncharge: e.target.value })
-                                }
-                            />
-                        </>
-                    )}
-
-
-
-                    <input
-                        type="text"
-                        placeholder="Boarding Point"
-                        className="w-full border rounded-lg px-4 py-2"
-                        value={form.boardingPoint}
-                        onChange={(e) =>
-                            setForm({ ...form, boardingPoint: e.target.value })
-                        }
-                    />
-
-
-
-                    <button
-                        onClick={handleSave}
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-                    >
-                        Save
-                    </button>
-                </div>
+                <button
+                    onClick={handleSave}
+                    className="w-full bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700 transition"
+                >
+                    Save
+                </button>
             </div>
         </div>
-    );
+    </div>
+);
 }

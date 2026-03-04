@@ -64,137 +64,156 @@ export default function SemesterPlan() {
     setSelected({});
   };
 
-  return (
-    <div className="max-w-5xl mx-auto space-y-8">
+return (
+  <div className="max-w-5xl mx-auto space-y-8">
 
-      <div className="flex justify-between items-center bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-3xl font-bold">Semester Plan</h2>
+    {/* HEADER */}
+    <div className="flex justify-between items-center bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-sm p-6 transition">
+      <h2 className="text-3xl font-bold text-zinc-800 dark:text-zinc-100">
+        Semester Plan
+      </h2>
 
-        <div className="flex gap-3">
+      <div className="flex gap-3">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-rose-600 hover:bg-rose-700 text-white px-5 py-2 rounded-lg transition"
+        >
+          {plan ? 'Edit Plan' : 'Create Plan'}
+        </button>
+
+        {plan && (
           <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+            onClick={deletePlan}
+            className="p-2 bg-rose-100 dark:bg-rose-900/30 rounded-lg hover:bg-rose-200 dark:hover:bg-rose-900/50 transition"
           >
-            {plan ? 'Edit Plan' : 'Create Plan'}
+            <Trash2 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
           </button>
+        )}
+      </div>
+    </div>
 
-          {plan && (
-            <button
-              onClick={deletePlan}
-              className="p-2 bg-red-100 rounded-lg hover:bg-red-200 transition"
+    {/* PLAN CONTENT */}
+    {plan && (
+      <div className="space-y-6">
+
+        {/* TOKEN SUMMARY */}
+        <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-6 rounded-2xl shadow-sm transition">
+          <h3 className="text-xl font-semibold mb-3 text-zinc-800 dark:text-zinc-100">
+            Total Tokens: {totalTokens}
+          </h3>
+
+          <div className="w-full bg-zinc-200 dark:bg-zinc-700 h-3 rounded-full overflow-hidden">
+            <div
+              className="bg-green-500 h-3 rounded-full transition-all duration-300"
+              style={{ width: `${Math.min((totalTokens / 16) * 100, 100)}%` }}
+            />
+          </div>
+        </div>
+
+        {/* ACTIVITY CARDS */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {plan.map(item => (
+            <div
+              key={item.name}
+              className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-6 rounded-2xl shadow-sm hover:shadow-md transition"
             >
-              <Trash2 className="w-5 h-5 text-red-600" />
-            </button>
-          )}
+              <h3 className="text-lg font-semibold text-zinc-800 dark:text-zinc-100">
+                {item.name}
+              </h3>
+
+              <p className="text-zinc-500 dark:text-zinc-400 mt-1">
+                {item.count} × {item.tokens} Tokens
+              </p>
+
+              <p className="mt-2 text-rose-600 dark:text-rose-400 font-bold">
+                {item.count * item.tokens} Total
+              </p>
+            </div>
+          ))}
         </div>
       </div>
+    )}
 
-      {plan && (
-        <div className="space-y-6">
+    {/* ================= MODAL ================= */}
+    {isModalOpen && (
+      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 w-full max-w-2xl rounded-2xl p-6 space-y-6 shadow-xl relative transition">
 
-          <div className="bg-white p-6 rounded-2xl shadow">
-            <h3 className="text-xl font-semibold mb-2">
-              Total Tokens: {totalTokens}
-            </h3>
-            <div className="w-full bg-gray-200 h-3 rounded-full">
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="absolute top-4 right-4 text-zinc-600 dark:text-zinc-300 hover:text-rose-500 transition"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <h3 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-100">
+            Plan Activities
+          </h3>
+
+          {/* ACTIVITY SELECT LIST */}
+          <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+            {activityOptions.map(option => (
               <div
-                className="bg-green-500 h-3 rounded-full"
-                style={{ width: `${Math.min((totalTokens / 16) * 100, 100)}%` }}
-              />
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {plan.map(item => (
-              <div
-                key={item.name}
-                className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition"
+                key={option.name}
+                className="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-700 py-3"
               >
-                <h3 className="text-lg font-semibold">{item.name}</h3>
-                <p className="text-gray-500 mt-1">
-                  {item.count} × {item.tokens} Tokens
-                </p>
-                <p className="mt-2 text-blue-600 font-bold">
-                  {item.count * item.tokens} Total
-                </p>
+                <div>
+                  <p className="font-medium text-zinc-800 dark:text-zinc-100">
+                    {option.name}
+                  </p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    {option.tokens} Tokens
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+
+                  <button
+                    onClick={() => changeCount(option.name, -1)}
+                    className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 flex items-center justify-center transition text-zinc-800 dark:text-zinc-100"
+                  >
+                    -
+                  </button>
+
+                  <span className="w-6 text-center text-zinc-800 dark:text-zinc-100">
+                    {selected[option.name] || 0}
+                  </span>
+
+                  <button
+                    onClick={() => changeCount(option.name, 1)}
+                    className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 flex items-center justify-center transition text-zinc-800 dark:text-zinc-100"
+                  >
+                    +
+                  </button>
+
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      )}
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white w-full max-w-2xl rounded-2xl p-6 space-y-6 shadow-lg relative">
+          {/* FOOTER */}
+          <div className="flex justify-between items-center">
+            <div className="font-semibold text-zinc-800 dark:text-zinc-100">
+              Total: {modalTotal} Tokens
+            </div>
 
             <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4"
+              onClick={savePlan}
+              className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2 rounded-lg transition"
             >
-              <X className="w-5 h-5 text-gray-600" />
+              Save Plan
             </button>
-
-            <h3 className="text-2xl font-semibold">Plan Activities</h3>
-
-            <div className="space-y-4 max-h-[400px] overflow-y-auto">
-              {activityOptions.map(option => (
-                <div
-                  key={option.name}
-                  className="flex justify-between items-center border-b py-3"
-                >
-                  <div>
-                    <p className="font-medium">{option.name}</p>
-                    <p className="text-sm text-gray-500">
-                      {option.tokens} Tokens
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => changeCount(option.name, -1)}
-                      className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
-                    >
-                      -
-                    </button>
-
-                    <span className="w-6 text-center">
-                      {selected[option.name] || 0}
-                    </span>
-
-                    <button
-                      onClick={() => changeCount(option.name, 1)}
-                      className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-between items-center">
-              <div className="font-semibold">
-                Total: {modalTotal} Tokens
-              </div>
-
-              <button
-                onClick={savePlan}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-              >
-                Save Plan
-              </button>
-            </div>
-
-            {error && (
-              <div className="text-red-600 text-sm">
-                {error}
-              </div>
-            )}
-
           </div>
+
+          {error && (
+            <div className="text-rose-600 dark:text-rose-400 text-sm">
+              {error}
+            </div>
+          )}
+
         </div>
-      )}
-    </div>
-  );
+      </div>
+    )}
+  </div>
+);
 }

@@ -23,7 +23,6 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
-  // Mock student data
   const students = [
     { name: 'Arjun', tokens: 18 },
     { name: 'Priya', tokens: 15 },
@@ -38,14 +37,37 @@ export default function Dashboard() {
   const finished = students.filter(s => s.tokens >= 16).length;
   const notFinished = students.length - finished;
 
+  // 🌙 detect dark mode
+  const isDark =
+    typeof window !== "undefined" &&
+    document.documentElement.classList.contains("dark");
+
+  const textColor = isDark ? "#e4e4e7" : "#27272a";      // zinc-200 / zinc-800
+  const gridColor = isDark ? "#3f3f46" : "#e4e4e7";      // zinc-700 / zinc-200
+
+  // ✅ DONUT DATA
   const pieData = {
     labels: ['Finished 16 Tokens', 'Below 16 Tokens'],
     datasets: [
       {
         data: [finished, notFinished],
-        backgroundColor: ['#16a34a', '#ef4444'],
+        backgroundColor: ['#00bc7d', '#f43f5e'], // green-500 / rose-500
+        borderWidth: 0,
       },
     ],
+  };
+
+  const pieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: "65%", // 👈 makes it DONUT
+    plugins: {
+      legend: {
+        labels: {
+          color: textColor,
+        },
+      },
+    },
   };
 
   const barData = {
@@ -54,9 +76,33 @@ export default function Dashboard() {
       {
         label: 'Tokens',
         data: students.map(s => s.tokens),
-        backgroundColor: '#3b82f6',
+        backgroundColor: '#f43f5e', // rose-500 (brand consistency)
+        borderRadius: 6,
       },
     ],
+  };
+
+  const barOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: textColor,
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: { color: textColor },
+        grid: { color: gridColor },
+      },
+      y: {
+        beginAtZero: true,
+        ticks: { color: textColor },
+        grid: { color: gridColor },
+      },
+    },
   };
 
   const lineData = {
@@ -65,59 +111,70 @@ export default function Dashboard() {
       {
         label: 'Total Tokens Growth',
         data: [40, 65, 90, 120, 150],
-        borderColor: '#6366f1',
-        backgroundColor: '#6366f1',
+        borderColor: '#f43f5e',
+        backgroundColor: '#f43f5e',
+        tension: 0.4,
+        pointRadius: 4,
       },
     ],
   };
 
+  const lineOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: textColor,
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: { color: textColor },
+        grid: { color: gridColor },
+      },
+      y: {
+        ticks: { color: textColor },
+        grid: { color: gridColor },
+      },
+    },
+  };
+
   return (
     <div className="space-y-8">
-      <h2 className="text-3xl font-bold">Staff Dashboard</h2>
+      <h2 className="text-3xl font-bold text-zinc-800 dark:text-zinc-100">
+        Staff Dashboard
+      </h2>
 
       <div className="grid md:grid-cols-2 gap-6">
-  <div className="bg-white p-5 rounded-2xl shadow">
-    <h3 className="text-lg font-semibold mb-4">
-      Eligibility Overview
-    </h3>
 
-    <div className="h-64">
-      <Pie
-        data={pieData}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false,
-        }}
-      />
-    </div>
-  </div>
+        {/* DONUT */}
+        <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-5 rounded-2xl shadow-sm">
+          <h3 className="text-lg font-semibold text-zinc-800 dark:text-zinc-100 mb-4">
+            Eligibility Overview
+          </h3>
+          <div className="h-64">
+            <Pie data={pieData} options={pieOptions} />
+          </div>
+        </div>
 
-  <div className="bg-white p-5 rounded-2xl shadow">
-    <h3 className="text-lg font-semibold mb-4">
-      Tokens Per Student
-    </h3>
+        {/* BAR */}
+        <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-5 rounded-2xl shadow-sm">
+          <h3 className="text-lg font-semibold text-zinc-800 dark:text-zinc-100 mb-4">
+            Tokens Per Student
+          </h3>
+          <div className="h-64">
+            <Bar data={barData} options={barOptions} />
+          </div>
+        </div>
+      </div>
 
-    <div className="h-64">
-      <Bar
-        data={barData}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: { beginAtZero: true }
-          }
-        }}
-      />
-    </div>
-  </div>
-</div>
-
-
-      <div className="bg-white p-6 rounded-2xl shadow">
-        <h3 className="text-lg font-semibold mb-4">
+      {/* LINE */}
+      <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-6 rounded-2xl shadow-sm">
+        <h3 className="text-lg font-semibold text-zinc-800 dark:text-zinc-100 mb-4">
           Monthly Token Growth
         </h3>
-        <Line data={lineData} />
+        <Line data={lineData} options={lineOptions} />
       </div>
     </div>
   );

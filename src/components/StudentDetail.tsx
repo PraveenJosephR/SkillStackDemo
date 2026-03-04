@@ -171,9 +171,11 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
             {/* Header */}
             <div className="flex items-center gap-4 mb-6">
                 <button onClick={goBack}>
-                    <ArrowLeft />
+                    <ArrowLeft className="text-zinc-900 dark:text-zinc-100" />
                 </button>
-                <h1 className="text-2xl font-semibold">{student.name}</h1>
+                <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+                    {student.name}
+                </h1>
             </div>
 
             {/* Split Layout */}
@@ -181,64 +183,60 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
 
                 {/* LEFT SIDE */}
                 <div className="w-1/3">
-                    <div className="bg-white border rounded-xl p-6 shadow-sm">
+                    <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm dark:shadow-zinc-900">
 
                         {/* Image */}
                         <div className="flex justify-center mb-6">
                             <img
                                 src={student.gender === 'Male' ? "/assets/img/student.jpg" : "/assets/img/fstudent.png"}
                                 alt="Student"
-                                className="w-52 h-52 rounded-md object-cover"
+                                className="w-52 h-52 rounded-md object-cover border border-zinc-300 dark:border-zinc-600"
                             />
                         </div>
 
                         {/* Details Section */}
-                        <div className="mt-6 border-t pt-6">
+                        <div className="mt-6 border-t border-zinc-200 dark:border-zinc-700 pt-6">
 
                             <div className="flex">
 
                                 {/* Left Column */}
                                 <div className="w-1/2 pr-4 space-y-2">
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Register No:</span> {student.registerNo}
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Roll No:</span> {student.rollNo}
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Department:</span> {student.department}
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Program:</span> {student.program}
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Semester:</span> {student.semester}
                                     </p>
                                 </div>
 
                                 {/* Vertical Divider */}
-                                <div className="w-px bg-gray-200 mx-2"></div>
+                                <div className="w-px bg-zinc-200 dark:bg-zinc-700 mx-2"></div>
 
                                 {/* Right Column */}
                                 <div className="w-1/2 pl-4 space-y-2">
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Batch:</span> {student.batch}
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Gender:</span> {student.gender}
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Blood Group:</span> {student.bloodGroup}
                                     </p>
-                                    <p className="text-sm text-gray-600 flex items-center gap-2">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300 flex items-center gap-2">
                                         <span className="font-medium">Email:</span>
-
                                         <span title={student.email}>
-                                            {student.email.length > 6
-                                                ? student.email.slice(0, 6) + '...'
-                                                : student.email}
+                                            {student.email.length > 6 ? student.email.slice(0, 6) + '...' : student.email}
                                         </span>
-
                                         <button
                                             onClick={() => {
                                                 navigator.clipboard.writeText(student.email);
@@ -247,13 +245,13 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                                             }}
                                             className={`transition-all duration-300 ${copied
                                                 ? 'text-green-600 animate-[pulse_0.4s_ease-in-out_2]'
-                                                : 'text-blue-600'
+                                                : 'text-rose-600'
                                                 }`}
                                         >
                                             <Copy className="w-4 h-4" />
                                         </button>
                                     </p>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         <span className="font-medium">Contact:</span> {student.contactNo}
                                     </p>
                                 </div>
@@ -261,27 +259,26 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                             </div>
 
                             <div className="mt-6 justify-between items-center flex">
-                                <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full">
+                                <span className="px-3 py-1 bg-red-100 dark:bg-rose-800 text-rose-700 dark:text-rose-300 rounded-full">
                                     {tokens} Tokens
                                 </span>
                                 <div>
                                     <div className="relative group inline-block ml-4">
-                                        <Github className="w-5 h-5 text-gray-800 cursor-pointer" />
+                                        <Github className="w-5 h-5 text-zinc-800 dark:text-zinc-200 cursor-pointer" />
                                         <span className="absolute bottom-full mb-2 hidden group-hover:block 
-                   bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                 bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
                                             GitHub
                                         </span>
                                     </div>
 
                                     <div className="relative group inline-block ml-2">
-                                        <Linkedin className="w-5 h-5 text-blue-600 cursor-pointer" />
+                                        <Linkedin className="w-5 h-5 text-blue-600 dark:text-blue-400 cursor-pointer" />
                                         <span className="absolute bottom-full mb-2 hidden group-hover:block 
-                   bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                 bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap">
                                             LinkedIn
                                         </span>
                                     </div>
                                 </div>
-
                             </div>
 
                         </div>
@@ -293,12 +290,12 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                 <div className="flex-1 relative">
 
                     {/* Tabs */}
-                    <div className="flex gap-6 border-b mb-6">
+                    <div className="flex gap-6 border-b border-zinc-200 dark:border-zinc-700 mb-6">
                         <button
                             onClick={() => setActiveTab('pending')}
                             className={`pb-2 text-sm font-medium ${activeTab === 'pending'
-                                ? 'border-b-2 border-blue-600 text-blue-600'
-                                : 'text-gray-500'
+                                ? 'border-b-2 border-red-600 text-red-600 dark:text-red-400'
+                                : 'text-zinc-500 dark:text-zinc-400'
                                 }`}
                         >
                             Pending Requests
@@ -307,8 +304,8 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                         <button
                             onClick={() => setActiveTab('ongoing')}
                             className={`pb-2 text-sm font-medium ${activeTab === 'ongoing'
-                                ? 'border-b-2 border-blue-600 text-blue-600'
-                                : 'text-gray-500'
+                                ? 'border-b-2 border-red-600 text-red-600 dark:text-red-400'
+                                : 'text-zinc-500 dark:text-zinc-400'
                                 }`}
                         >
                             On Going Activities
@@ -317,8 +314,8 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                         <button
                             onClick={() => setActiveTab('previous')}
                             className={`pb-2 text-sm font-medium ${activeTab === 'previous'
-                                ? 'border-b-2 border-blue-600 text-blue-600'
-                                : 'text-gray-500'
+                                ? 'border-b-2 border-red-600 text-red-600 dark:text-red-400'
+                                : 'text-zinc-500 dark:text-zinc-400'
                                 }`}
                         >
                             Previous Activities
@@ -329,41 +326,38 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                         {proposals
                             .filter((proposal) => {
                                 if (activeTab === 'pending') return proposal.status === 'Pending';
-                                if (activeTab === 'ongoing')
-                                    return proposal.status === 'Accepted' && proposal.stage === 'start';
-                                if (activeTab === 'previous')
-                                    return proposal.status === 'Accepted' && proposal.stage === 'completed';
+                                if (activeTab === 'ongoing') return proposal.status === 'Accepted' && proposal.stage === 'start';
+                                if (activeTab === 'previous') return proposal.status === 'Accepted' && proposal.stage === 'completed';
                                 return false;
                             })
                             .map((proposal) => (
                                 <div
                                     key={proposal.id}
-                                    className="bg-white border rounded-xl p-6 shadow-sm"
+                                    className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm dark:shadow-zinc-900"
                                 >
                                     <div className="flex justify-between items-center mb-2">
-                                        <h3 className="font-semibold flex items-center gap-2">
+                                        <h3 className="font-semibold flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
                                             {proposal.title}
                                             {activeTab === 'pending' && (
                                                 <span
                                                     className={`text-xs px-2 py-1 rounded-full font-medium ${proposal.stage === 'start'
-                                                        ? 'bg-yellow-100 text-yellow-700'
+                                                        ? 'bg-yellow-100 dark:bg-yellow-800 text-yellow-700 dark:text-yellow-300'
                                                         : proposal.stage === 'completed'
-                                                            ? 'bg-cyan-100 text-cyan-700'
-                                                            : 'bg-gray-100 text-gray-600'
+                                                            ? 'bg-cyan-100 dark:bg-cyan-800 text-cyan-700 dark:text-cyan-300'
+                                                            : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300'
                                                         }`}
                                                 >
                                                     {proposal.stage}
                                                 </span>
                                             )}
-
                                         </h3>
 
-                                        <span className="text-sm text-gray-500">
+                                        <span className="text-sm text-zinc-500 dark:text-zinc-400">
                                             {proposal.tokens} Tokens
                                         </span>
                                     </div>
 
-                                    <p className="text-sm text-gray-600 mb-4">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4">
                                         {proposal.description}
                                     </p>
 
@@ -371,13 +365,13 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                                         <div className="flex gap-3">
                                             <button
                                                 onClick={() => handleAccept(proposal.id)}
-                                                className="px-4 py-1 bg-green-600 text-white rounded-lg whitespace-nowrap"
+                                                className="px-4 py-1 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg whitespace-nowrap"
                                             >
                                                 Accept
                                             </button>
                                             <button
                                                 onClick={() => handleReject(proposal.id)}
-                                                className="px-4 py-1 bg-red-600 text-white rounded-lg whitespace-nowrap"
+                                                className="px-4 py-1 bg-rose-600 dark:bg-rose-700 text-white rounded-lg whitespace-nowrap"
                                             >
                                                 Reject
                                             </button>
@@ -385,8 +379,8 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                                     ) : (
                                         <span
                                             className={`text-sm font-medium ${proposal.status === 'Accepted'
-                                                ? 'text-green-600'
-                                                : 'text-red-600'
+                                                ? 'text-green-600 dark:text-green-400'
+                                                : 'text-red-600 dark:text-red-400'
                                                 }`}
                                         >
                                             {proposal.status}
@@ -398,43 +392,38 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                         {/* Empty state */}
                         {proposals.filter((proposal) => {
                             if (activeTab === 'pending') return proposal.status === 'Pending';
-                            if (activeTab === 'ongoing')
-                                return proposal.status === 'Accepted' && proposal.stage === 'start';
-                            if (activeTab === 'previous')
-                                return proposal.status === 'Accepted' && proposal.stage === 'completed';
+                            if (activeTab === 'ongoing') return proposal.status === 'Accepted' && proposal.stage === 'start';
+                            if (activeTab === 'previous') return proposal.status === 'Accepted' && proposal.stage === 'completed';
                             return false;
                         }).length === 0 && (
-                                <div className="text-gray-400 text-sm">
+                                <div className="text-zinc-400 dark:text-zinc-500 text-sm">
                                     No activities in this section.
                                 </div>
                             )}
                     </div>
 
                     {/* Bottom Right Malpractice Button */}
-                    <div className="absolute bottom-0 right-0">
-                        <div className="absolute bottom-0 right-0 flex gap-2">
-                            <button
-                                onClick={() => setPlanOpen(true)}
-                                className="border-2 bg-blue-600 rounded-md px-3 py-2 text-white hover:bg-blue-700 whitespace-nowrap"
-                            >
-                                View Student Plan
-                            </button>
-                            <button
-                                onClick={() => setReminderOpen(true)}
-                                className="p-2 whitespace-nowrap bg-blue-600 rounded-md text-white hover:bg-blue-700"
-                            >
-                                Send Reminder
-                            </button>
+                    <div className="absolute bottom-0 right-0 flex gap-2">
+                        <button
+                            onClick={() => setPlanOpen(true)}
+                            className=" bg-rose-600 dark:bg-rose-700 rounded-md px-3 py-2 text-white hover:bg-rose-700 dark:hover:bg-rose-800 whitespace-nowrap"
+                        >
+                            View Student Plan
+                        </button>
+                        <button
+                            onClick={() => setReminderOpen(true)}
+                            className="p-2 whitespace-nowrap bg-rose-600 dark:bg-rose-700 rounded-md text-white hover:bg-rose-700 dark:hover:bg-rose-800"
+                        >
+                            Send Reminder
+                        </button>
 
-                            <button
-                                onClick={() => setMalpracticeOpen(true)}
-                                className="flex items-center gap-2 whitespace-nowrap border-2 border-red-600 rounded-md p-1 text-red-600 hover:bg-red-100"
-                            >
-                                <AlertTriangle className="w-4 h-4" />
-                                Give Malpractice
-                            </button>
-
-                        </div>
+                        <button
+                            onClick={() => setMalpracticeOpen(true)}
+                            className="flex items-center gap-2 whitespace-nowrap border-2 border-rose-600 dark:border-rose-400 rounded-md p-1 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-800"
+                        >
+                            <AlertTriangle className="w-4 h-4" />
+                            Give Malpractice
+                        </button>
                     </div>
 
                 </div>
@@ -443,22 +432,23 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
             {/* Malpractice Modal */}
             {malpracticeOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    {/* Overlay */}
                     <div
                         className="absolute inset-0 bg-black/40"
                         onClick={() => setMalpracticeOpen(false)}
                     />
 
-                    <div className="relative bg-white rounded-2xl p-8 shadow-2xl w-[420px] z-50">
-                        <h3 className="text-xl font-semibold mb-6 text-gray-800">
+                    {/* Modal */}
+                    <div className="relative bg-white dark:bg-zinc-800 rounded-2xl p-8 shadow-2xl w-[420px] z-50">
+                        <h3 className="text-xl font-semibold mb-6 text-zinc-900 dark:text-zinc-100">
                             Assign Malpractice
                         </h3>
 
                         <div className="space-y-4">
-
                             <select
                                 value={selectedMalpractice}
                                 onChange={(e) => setSelectedMalpractice(e.target.value)}
-                                className="w-full border px-3 py-2 rounded-lg"
+                                className="w-full border border-zinc-300 dark:border-zinc-600 px-3 py-2 rounded-lg bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
                             >
                                 <option value="">Select Malpractice Type</option>
                                 {malpracticeOptions.map((m) => (
@@ -469,15 +459,13 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                             </select>
 
                             {selectedMalpractice && (
-                                <div className="text-sm text-gray-600">
+                                <div className="text-sm text-zinc-600 dark:text-zinc-300">
                                     This will deduct{' '}
-                                    <span className="font-semibold text-red-600">
+                                    <span className="font-semibold text-rose-600 dark:text-rose-400">
                                         -
-                                        {
-                                            malpracticeOptions.find(
-                                                (m) => m.label === selectedMalpractice
-                                            )?.value
-                                        }{' '}
+                                        {malpracticeOptions.find(
+                                            (m) => m.label === selectedMalpractice
+                                        )?.value}{' '}
                                         tokens
                                     </span>
                                     .
@@ -487,7 +475,7 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                             <div className="flex justify-end gap-3 pt-4">
                                 <button
                                     onClick={() => setMalpracticeOpen(false)}
-                                    className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+                                    className="px-4 py-2 bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-300 dark:hover:bg-zinc-600"
                                 >
                                     Cancel
                                 </button>
@@ -495,7 +483,7 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                                 <button
                                     onClick={confirmMalpractice}
                                     disabled={!selectedMalpractice}
-                                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-40"
+                                    className="px-4 py-2 bg-rose-600 dark:bg-rose-700 text-white rounded-lg hover:bg-rose-700 dark:hover:bg-rose-800 disabled:opacity-40"
                                 >
                                     Confirm
                                 </button>
@@ -506,25 +494,26 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
             )}
             {reminderOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    {/* Overlay */}
                     <div
                         className="absolute inset-0 bg-black/40"
                         onClick={() => setReminderOpen(false)}
                     />
 
-                    <div className="relative bg-white rounded-2xl p-8 shadow-2xl w-[500px] z-50">
-                        <h3 className="text-xl font-semibold mb-6 text-gray-800">
+                    {/* Modal */}
+                    <div className="relative bg-white dark:bg-zinc-800 rounded-2xl p-8 shadow-2xl w-[500px] z-50">
+                        <h3 className="text-xl font-semibold mb-6 text-zinc-900 dark:text-zinc-100">
                             Send Reminder
                         </h3>
 
                         <div className="space-y-4">
-
                             <input
                                 type="text"
                                 value={reminderForm.subject}
                                 onChange={(e) =>
                                     setReminderForm({ ...reminderForm, subject: e.target.value })
                                 }
-                                className="w-full border px-3 py-2 rounded-lg"
+                                className="w-full border border-zinc-300 dark:border-zinc-600 px-3 py-2 rounded-lg bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
                             />
 
                             <textarea
@@ -533,7 +522,7 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                                 onChange={(e) =>
                                     setReminderForm({ ...reminderForm, message: e.target.value })
                                 }
-                                className="w-full border px-3 py-2 rounded-lg"
+                                className="w-full border border-zinc-300 dark:border-zinc-600 px-3 py-2 rounded-lg bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
                             />
 
                             <select
@@ -541,7 +530,7 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                                 onChange={(e) =>
                                     setReminderForm({ ...reminderForm, priority: e.target.value })
                                 }
-                                className="w-full border px-3 py-2 rounded-lg"
+                                className="w-full border border-zinc-300 dark:border-zinc-600 px-3 py-2 rounded-lg bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100"
                             >
                                 <option value="Action Required">🔵 Action Required</option>
                                 <option value="Immediate Action Needed">🟡 Immediate Action Needed</option>
@@ -551,7 +540,7 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                             <div className="flex justify-end gap-3 pt-4">
                                 <button
                                     onClick={() => setReminderOpen(false)}
-                                    className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+                                    className="px-4 py-2 bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-300 dark:hover:bg-zinc-600"
                                 >
                                     Cancel
                                 </button>
@@ -562,7 +551,7 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                                         setShowToast(true);
                                         setTimeout(() => setShowToast(false), 2000);
                                     }}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                    className="px-4 py-2 bg-red-600 dark:bg-red-700 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-800"
                                 >
                                     Send
                                 </button>
@@ -573,32 +562,33 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
             )}
             {planOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    {/* Overlay */}
                     <div
                         className="absolute inset-0 bg-black/40"
                         onClick={() => setPlanOpen(false)}
                     />
 
-                    <div className="relative bg-white rounded-2xl p-8 shadow-2xl w-[600px] max-h-[80vh] overflow-y-auto z-50">
-                        <h3 className="text-xl font-semibold mb-8 text-gray-800">
+                    {/* Modal */}
+                    <div className="relative bg-white dark:bg-zinc-800 rounded-2xl p-8 shadow-2xl w-[600px] max-h-[80vh] overflow-y-auto z-50">
+                        <h3 className="text-xl font-semibold mb-8 text-zinc-900 dark:text-zinc-100">
                             Student Activity Plan
                         </h3>
 
-                        <div className="relative border-l-2 border-gray-200 ml-4 space-y-10">
+                        <div className="relative border-l-2 border-zinc-200 dark:border-zinc-700 ml-4 space-y-10">
                             {studentPlan.map((item, index) => (
                                 <div key={item.id} className="relative pl-6">
-
                                     {/* Dot */}
-                                    <div className="absolute -left-[9px] top-1 w-4 h-4 bg-purple-600 rounded-full border-4 border-white"></div>
+                                    <div className="absolute -left-[9px] top-1 w-4 h-4 bg-rose-600 rounded-full border-4 border-white dark:border-zinc-800"></div>
 
-                                    <p className="text-xs text-gray-500 mb-1">
+                                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">
                                         {item.month}
                                     </p>
 
-                                    <h4 className="font-semibold text-gray-800">
+                                    <h4 className="font-semibold text-zinc-900 dark:text-zinc-100">
                                         {item.activity}
                                     </h4>
 
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                                         {item.description}
                                     </p>
                                 </div>
@@ -608,7 +598,7 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                         <div className="flex justify-end mt-10">
                             <button
                                 onClick={() => setPlanOpen(false)}
-                                className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+                                className="px-4 py-2 bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 rounded-lg hover:bg-zinc-300 dark:hover:bg-zinc-600"
                             >
                                 Close
                             </button>
@@ -617,7 +607,7 @@ export default function StudentDetail({ student, goBack, updateTokens }: Props) 
                 </div>
             )}
             {showToast && (
-                <div className="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+                <div className="fixed bottom-6 right-6 bg-emerald-600 dark:bg-emerald-700 text-white px-6 py-3 rounded-lg shadow-lg z-50">
                     Reminder sent successfully
                 </div>
             )}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {availableActivities} from "../mockData";
+import { availableActivities } from "../mockData";
 
 export interface Activity {
   id: string;
@@ -62,23 +62,28 @@ export default function SelectActivities() {
     <div className="relative p-8">
 
       {/* PAGE TITLE */}
-      <h1 className="text-2xl font-semibold mb-6">Select Activities</h1>
+      <h1 className="text-2xl font-semibold mb-6 text-zinc-800 dark:text-zinc-100">
+        Select Activities
+      </h1>
 
       {/* ACTIVITY GRID */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {activities.map((activity) => (
           <div
             key={activity.id}
-            className="bg-white border rounded-2xl p-6 shadow-sm hover:shadow-md transition"
+            className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-6 shadow-sm hover:shadow-md transition"
           >
             <div className="flex justify-between items-center mb-2">
-              <h3 className="font-semibold">{activity.name}</h3>
-              <span className="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+              <h3 className="font-semibold text-zinc-800 dark:text-zinc-100">
+                {activity.name}
+              </h3>
+
+              <span className="text-sm bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-400 px-2 py-1 rounded-full">
                 {activity.tokens} Tokens
               </span>
             </div>
 
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
               {activity.description}
             </p>
 
@@ -87,7 +92,7 @@ export default function SelectActivities() {
                 setSelectedActivity(activity);
                 setStartOpen(true);
               }}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg whitespace-nowrap"
+              className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg whitespace-nowrap transition"
             >
               Start
             </button>
@@ -98,16 +103,16 @@ export default function SelectActivities() {
       {/* START ACTIVITY MODAL */}
       {startOpen && selectedActivity && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          
+
           {/* Overlay */}
           <div
-            className="absolute inset-0 bg-black/40"
+            className="absolute inset-0 bg-black/60"
             onClick={() => setStartOpen(false)}
           />
 
           {/* Modal */}
-          <div className="relative bg-white rounded-2xl p-8 shadow-2xl w-[500px] z-50">
-            <h3 className="text-xl font-semibold mb-6">
+          <div className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-8 shadow-2xl w-[500px] z-50 transition">
+            <h3 className="text-xl font-semibold mb-6 text-zinc-800 dark:text-zinc-100">
               Start {selectedActivity.name}
             </h3>
 
@@ -119,7 +124,7 @@ export default function SelectActivities() {
                 onChange={(e) =>
                   setForm({ ...form, title: e.target.value })
                 }
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition"
               />
 
               <input
@@ -129,7 +134,7 @@ export default function SelectActivities() {
                 onChange={(e) =>
                   setForm({ ...form, organization: e.target.value })
                 }
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition"
               />
 
               <textarea
@@ -138,7 +143,7 @@ export default function SelectActivities() {
                 onChange={(e) =>
                   setForm({ ...form, description: e.target.value })
                 }
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition"
               />
 
               <div className="flex gap-4">
@@ -148,7 +153,7 @@ export default function SelectActivities() {
                   onChange={(e) =>
                     setForm({ ...form, fromDate: e.target.value })
                   }
-                  className="w-1/2 border px-3 py-2 rounded-lg"
+                  className="w-1/2 border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition"
                 />
 
                 <input
@@ -157,21 +162,21 @@ export default function SelectActivities() {
                   onChange={(e) =>
                     setForm({ ...form, toDate: e.target.value })
                   }
-                  className="w-1/2 border px-3 py-2 rounded-lg"
+                  className="w-1/2 border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition"
                 />
               </div>
 
               <div className="flex justify-end gap-3 pt-4">
                 <button
                   onClick={() => setStartOpen(false)}
-                  className="px-4 py-2 bg-gray-200 rounded-lg"
+                  className="px-4 py-2 bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-100 rounded-lg hover:bg-zinc-300 dark:hover:bg-zinc-600 transition"
                 >
                   Cancel
                 </button>
 
                 <button
                   onClick={handleStart}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+                  className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition"
                 >
                   Start
                 </button>
@@ -193,15 +198,16 @@ export default function SelectActivities() {
       {/* Simple animation */}
       <style>
         {`
-          @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-          }
-          .animate-slideIn {
-            animation: slideIn 0.3s ease-out;
-          }
-        `}
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        .animate-slideIn {
+          animation: slideIn 0.3s ease-out;
+        }
+      `}
       </style>
+
     </div>
   );
 }

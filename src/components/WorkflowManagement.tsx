@@ -122,135 +122,133 @@ export default function WorkflowManagement() {
     setSelectedStages((prev) => prev.filter((s) => s !== stage));
   };
 
-  return (
-    <div className="p-10 space-y-8">
+ return (
+  <div className="p-10 space-y-8">
 
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Workflow Management</h1>
-        <button
-          onClick={openCreate}
-          className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-xl"
-        >
-          <Plus size={16} />
-          Create Workflow
-        </button>
-      </div>
-
-      {/* Workflow Cards */}
-      {workflows.map((wf) => (
-        <div
-          key={wf.id}
-          className="bg-white rounded-2xl shadow-lg p-6 space-y-4"
-        >
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">{wf.name}</h2>
-
-            <div className="flex gap-4">
-              <button onClick={() => openEdit(wf)}>
-                <Pencil size={18} />
-              </button>
-              <button onClick={() => deleteWorkflow(wf.id)}>
-                <Trash2 size={18} className="text-red-600" />
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center flex-wrap gap-3">
-            {wf.stages.map((stage, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <span className="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm">
-                  {stage}
-                </span>
-                {i !== wf.stages.length - 1 && (
-                  <ArrowRight size={16} className="text-gray-400" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-
-      {/* Modal */}
-      {modalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-          <div className="bg-white w-[95%] max-w-4xl p-8 rounded-2xl relative space-y-6">
-
-            <button
-              onClick={() => setModalOpen(false)}
-              className="absolute top-5 right-5"
-            >
-              <X />
-            </button>
-
-            <h2 className="text-2xl font-bold">
-              {editing ? "Edit Workflow" : "Create Workflow"}
-            </h2>
-
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Workflow Name"
-              className="w-full border p-3 rounded-lg"
-            />
-
-            {/* Available Stages */}
-            <div>
-              <p className="font-medium mb-2">Available Stages</p>
-              <div className="flex flex-wrap gap-3">
-                {ALL_STAGES.map((stage) => (
-                  <button
-                    key={stage}
-                    onClick={() => addStage(stage)}
-                    className="bg-gray-100 hover:bg-gray-200 px-4 py-1 rounded-full text-sm"
-                  >
-                    {stage}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Selected Workflow Builder */}
-            <div>
-              <p className="font-medium mb-2">Workflow Order (Drag to reorder)</p>
-
-              <div className="bg-gray-50 rounded-xl p-6 min-h-[100px]">
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={handleDragEnd}
-                >
-                  <SortableContext
-                    items={selectedStages}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    <div className="flex flex-wrap items-center gap-3">
-                      {selectedStages.map((stage, i) => (
-                        <SortableItem
-                          key={stage}
-                          id={stage}
-                          onRemove={() => removeStage(stage)}
-                          isLast={i === selectedStages.length - 1}
-                        />
-                      ))}
-                    </div>
-                  </SortableContext>
-                </DndContext>
-              </div>
-            </div>
-
-            <button
-              onClick={saveWorkflow}
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl w-full"
-            >
-              Save Workflow
-            </button>
-
-          </div>
-        </div>
-      )}
+    {/* Header */}
+    <div className="flex justify-between items-center">
+      <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">Workflow Management</h1>
+      <button
+        onClick={openCreate}
+        className="flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-5 py-2 rounded-xl"
+      >
+        <Plus size={16} />
+        Create Workflow
+      </button>
     </div>
-  );
+
+    {/* Workflow Cards */}
+    {workflows.map((wf) => (
+      <div
+        key={wf.id}
+        className="bg-white dark:bg-zinc-800 rounded-2xl shadow-lg p-6 space-y-4 border border-zinc-200 dark:border-zinc-700"
+      >
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">{wf.name}</h2>
+
+          <div className="flex gap-4">
+            <button onClick={() => openEdit(wf)}>
+              <Pencil size={18} className="text-zinc-600 dark:text-zinc-300 hover:text-rose-500" />
+            </button>
+            <button onClick={() => deleteWorkflow(wf.id)}>
+              <Trash2 size={18} className="text-rose-600" />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center flex-wrap gap-3">
+          {wf.stages.map((stage, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <span className="bg-rose-100 text-rose-700 dark:bg-rose-600 dark:text-white px-4 py-1 rounded-full text-sm">
+                {stage}
+              </span>
+              {i !== wf.stages.length - 1 && (
+                <ArrowRight size={16} className="text-zinc-400 dark:text-zinc-300" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    {/* Modal */}
+    {modalOpen && (
+      <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+        <div className="bg-white dark:bg-zinc-800 w-[95%] max-w-4xl p-8 rounded-2xl relative space-y-6 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100">
+
+          <button
+            onClick={() => setModalOpen(false)}
+            className="absolute top-5 right-5 text-zinc-600 dark:text-zinc-300 hover:text-rose-500"
+          >
+            <X />
+          </button>
+
+          <h2 className="text-2xl font-bold">{editing ? "Edit Workflow" : "Create Workflow"}</h2>
+
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Workflow Name"
+            className="w-full border border-zinc-300 dark:border-zinc-700 p-3 rounded-lg bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500"
+          />
+
+          {/* Available Stages */}
+          <div>
+            <p className="font-medium mb-2">Available Stages</p>
+            <div className="flex flex-wrap gap-3">
+              {ALL_STAGES.map((stage) => (
+                <button
+                  key={stage}
+                  onClick={() => addStage(stage)}
+                  className="bg-zinc-100 dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600 px-4 py-1 rounded-full text-sm text-zinc-900 dark:text-zinc-100"
+                >
+                  {stage}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Selected Workflow Builder */}
+          <div>
+            <p className="font-medium mb-2">Workflow Order (Drag to reorder)</p>
+
+            <div className="bg-zinc-50 dark:bg-zinc-700 rounded-xl p-6 min-h-[100px]">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={selectedStages}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <div className="flex flex-wrap items-center gap-3">
+                    {selectedStages.map((stage, i) => (
+                      <SortableItem
+                        key={stage}
+                        id={stage}
+                        onRemove={() => removeStage(stage)}
+                        isLast={i === selectedStages.length - 1}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            </div>
+          </div>
+
+          <button
+            onClick={saveWorkflow}
+            className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-xl w-full"
+          >
+            Save Workflow
+          </button>
+
+        </div>
+      </div>
+    )}
+  </div>
+);
 }
 
 /* Sortable Badge Component */
@@ -271,13 +269,13 @@ function SortableItem({
     transition,
   };
 
-  return (
+   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}
       className="flex items-center gap-3">
-      <div className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm cursor-move">
+      <div className="bg-rose-500 text-white px-4 py-1 rounded-full text-sm cursor-move">
         {id}
       </div>
-      {!isLast && <ArrowRight size={16} className="text-gray-400" />}
+      {!isLast && <ArrowRight size={16} className="text-zinc-400 dark:text-zinc-300" />}
     </div>
   );
 }

@@ -87,129 +87,144 @@ export default function ProgramManagement() {
     setDeleteConfirm(null);
   };
 
-  return (
-    <div className="bg-white rounded-xl shadow-sm border">
-      {/* Header */}
-      <div className="flex justify-between items-center p-6 border-b">
-        <h2 className="text-xl font-semibold">Program & Branch Management</h2>
-        <button
-          onClick={openCreate}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          <Plus className="w-4 h-4" />
-          Add Program
+return (
+  <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border dark:border-zinc-700">
+    {/* Header */}
+    <div className="flex justify-between items-center p-6 border-b dark:border-zinc-700">
+      <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+        Program & Branch Management
+      </h2>
+      <button
+        onClick={openCreate}
+        className="flex items-center gap-2 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition"
+      >
+        <Plus className="w-4 h-4" />
+        Add Program
+      </button>
+    </div>
+
+    {/* Table */}
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm text-left">
+        <thead className="bg-gray-50 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400 uppercase text-xs">
+          <tr>
+            <th className="px-6 py-4">Program</th>
+            <th className="px-6 py-4">Branch</th>
+            <th className="px-6 py-4">Duration (Years)</th>
+            <th className="px-6 py-4">Created On</th>
+            <th className="px-6 py-4">Upadated On</th>
+            <th className="px-6 py-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {courses.map((course) => (
+            <tr
+              key={course.id}
+              className="border-t dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800"
+            >
+              <td className="px-6 py-4 text-gray-800 dark:text-zinc-200">
+                {course.program}
+              </td>
+              <td className="px-6 py-4 text-gray-800 dark:text-zinc-200">
+                {course.branch}
+              </td>
+              <td className="px-6 py-4 text-gray-800 dark:text-zinc-200">
+                {course.duration}
+              </td>
+              <td className="px-6 py-4 text-gray-800 dark:text-zinc-200">
+                {course.createdAt}
+              </td>
+              <td className="px-6 py-4 text-gray-800 dark:text-zinc-200">
+                {course.updatedAt}
+              </td>
+              <td className="px-6 py-4 flex gap-3 relative">
+                <button onClick={() => openEdit(course)}>
+                  <Pencil className="w-4 h-4 text-rose-600" />
+                </button>
+                <button onClick={() => setDeleteConfirm(course.id)}>
+                  <Trash2 className="w-4 h-4 text-rose-600" />
+                </button>
+
+                {deleteConfirm === course.id && (
+                  <div className="absolute top-8 right-0 bg-white dark:bg-zinc-800 shadow-lg border dark:border-zinc-700 rounded-lg p-4 text-sm z-50 text-gray-800 dark:text-zinc-200">
+                    <p className="mb-3">Are you sure?</p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleDelete(course.id)}
+                        className="px-3 py-1 bg-rose-600 text-white rounded"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={() => setDeleteConfirm(null)}
+                        className="px-3 py-1 bg-gray-200 dark:bg-zinc-700 dark:text-zinc-200 rounded"
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {/* Drawer */}
+    <div
+      className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-96 bg-white dark:bg-zinc-900 shadow-2xl z-40 transform transition-transform duration-300 ${
+        drawerOpen ? 'translate-x-0' : 'translate-x-full'
+      }`}
+    >
+      <div className="flex justify-between items-center p-6 border-b dark:border-zinc-700">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+          {editingId ? 'Edit Program' : 'Add Program'}
+        </h2>
+        <button onClick={() => setDrawerOpen(false)}>
+          <X className="w-5 h-5 text-gray-700 dark:text-zinc-300" />
         </button>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-gray-50 text-gray-600 uppercase text-xs">
-            <tr>
-              <th className="px-6 py-4">Program</th>
-              <th className="px-6 py-4">Branch</th>
-              <th className="px-6 py-4">Duration (Years)</th>
-              <th className="px-6 py-4">Created On</th>
-              <th className="px-6 py-4">Upadated On</th>
-              <th className="px-6 py-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map((course) => (
-              <tr key={course.id} className="border-t hover:bg-gray-50">
-                <td className="px-6 py-4">{course.program}</td>
-                <td className="px-6 py-4">{course.branch}</td>
-                <td className="px-6 py-4">{course.duration}</td>
-                <td className="px-6 py-4">{course.createdAt}</td>
-                <td className="px-6 py-4">{course.updatedAt}</td>
-                <td className="px-6 py-4 flex gap-3 relative">
-                  <button onClick={() => openEdit(course)}>
-                    <Pencil className="w-4 h-4 text-blue-600" />
-                  </button>
-                  <button onClick={() => setDeleteConfirm(course.id)}>
-                    <Trash2 className="w-4 h-4 text-red-600" />
-                  </button>
+      <div className="p-6 space-y-4">
+        <input
+          type="text"
+          placeholder="Program (BE / ME)"
+          className="w-full border dark:border-zinc-700 rounded-lg px-4 py-2 bg-white dark:bg-zinc-800 text-gray-800 dark:text-zinc-200"
+          value={form.program}
+          onChange={(e) =>
+            setForm({ ...form, program: e.target.value })
+          }
+        />
 
-                  {deleteConfirm === course.id && (
-                    <div className="absolute top-8 right-0 bg-white shadow-lg border rounded-lg p-4 text-sm z-50">
-                      <p className="mb-3">Are you sure?</p>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleDelete(course.id)}
-                          className="px-3 py-1 bg-red-600 text-white rounded"
-                        >
-                          Yes
-                        </button>
-                        <button
-                          onClick={() => setDeleteConfirm(null)}
-                          className="px-3 py-1 bg-gray-200 rounded"
-                        >
-                          No
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+        <input
+          type="text"
+          placeholder="Branch"
+          className="w-full border dark:border-zinc-700 rounded-lg px-4 py-2 bg-white dark:bg-zinc-800 text-gray-800 dark:text-zinc-200"
+          value={form.branch}
+          onChange={(e) =>
+            setForm({ ...form, branch: e.target.value })
+          }
+        />
 
-      {/* Drawer */}
-      <div
-        className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-96 bg-white shadow-2xl z-40 transform transition-transform duration-300 ${
-          drawerOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="flex justify-between items-center p-6 border-b">
-          <h2 className="text-lg font-semibold">
-            {editingId ? 'Edit Program' : 'Add Program'}
-          </h2>
-          <button onClick={() => setDrawerOpen(false)}>
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+        <input
+          type="number"
+          placeholder="Duration (Years)"
+          className="w-full border dark:border-zinc-700 rounded-lg px-4 py-2 bg-white dark:bg-zinc-800 text-gray-800 dark:text-zinc-200"
+          value={form.duration}
+          onChange={(e) =>
+            setForm({ ...form, duration: e.target.value })
+          }
+        />
 
-        <div className="p-6 space-y-4">
-          <input
-            type="text"
-            placeholder="Program (BE / ME)"
-            className="w-full border rounded-lg px-4 py-2"
-            value={form.program}
-            onChange={(e) =>
-              setForm({ ...form, program: e.target.value })
-            }
-          />
-
-          <input
-            type="text"
-            placeholder="Branch"
-            className="w-full border rounded-lg px-4 py-2"
-            value={form.branch}
-            onChange={(e) =>
-              setForm({ ...form, branch: e.target.value })
-            }
-          />
-
-          <input
-            type="number"
-            placeholder="Duration (Years)"
-            className="w-full border rounded-lg px-4 py-2"
-            value={form.duration}
-            onChange={(e) =>
-              setForm({ ...form, duration: e.target.value })
-            }
-          />
-
-          <button
-            onClick={handleSave}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Save
-          </button>
-        </div>
+        <button
+          onClick={handleSave}
+          className="w-full bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700 transition"
+        >
+          Save
+        </button>
       </div>
     </div>
-  );
+  </div>
+);
 }
